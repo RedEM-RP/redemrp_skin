@@ -1,0 +1,206 @@
+<html>
+<head>
+<title> XRP CHARACTER CREATOR </title>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Roboto:light,regular,medium,thin,italic,mediumitalic,bold"
+		title="roboto">
+
+	<link href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" rel="stylesheet">
+	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+</head>
+<body>
+	<script src="js/jquery-1.4.1.min.js" type="text/javascript"></script>
+	<script src="js/jquery.jcarousel.pack.js" type="text/javascript"></script>
+	<script src="js/jquery-func.js" type="text/javascript"></script>
+	<script src="js/listener.js" type="text/javascript"></script>
+	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+<div id="creator">
+	<div class="title">Character Creator</div>
+<form>
+	<div class="plec selector">
+		SEX</br>
+		<label id="sex-1" class="sex-item sex-item-selected"><input type="radio" name="sex" checked value="male" onclick="changesex(1)"><span>Male</span></label>
+		<label id="sex-2" class="sex-item"><input type="radio" name="sex" value="female" onclick="changesex(2)"><span>Female</span></label>
+	</div>
+	
+	<div class="grubosc selector">
+		Body</br>
+	<input type="range" id="fat" name="fat" min="1" max="5" value="1" step="1" onchange="changebody()">
+	</div>
+	
+	<div class="skincolor selector" id="skincolor" >
+		Skin Color:</br>
+		<label id="skincolor-1" class="skincolor-item selected"><input type="radio" name="skin" checked value="1" onclick="changeskin()"><img src="images/skin1.png"></img></label>
+		<label id="skincolor-2" class="skincolor-item"><input type="radio" name="skin" value="2" onclick="changeskin()"><img src="images/skin2.png"></img></label>
+		<label id="skincolor-3" class="skincolor-item"><input type="radio" name="skin" value="3" onclick="changeskin()"><img src="images/skin3.png"></img></label>
+		<label id="skincolor-4" class="skincolor-item"><input type="radio" name="skin" value="4" onclick="changeskin()"><img src="images/skin4.png"></img></label>
+		<label id="skincolor-5" class="skincolor-item"><input type="radio" name="skin" value="5" onclick="changeskin()"><img src="images/skin5.png"></img></label>
+		<label id="skincolor-6" class="skincolor-item"><input type="radio" name="skin" value="6" onclick="changeskin()"><img src="images/skin6.png"></img></label>
+	</div>
+
+	</br>
+	<div class="done">
+		<input type="reset" class="reset" value="Reset">
+		<input type="button" class="submit" value="Next" onclick="next()">
+	</div>
+</div>
+<div id="creator2"><div class="title">Character Creator</div>
+	<div class="head selector">
+		Face:</br>
+		<input type="range" id="face" name="face" min="1" max="124" value="1" step="1" onchange="changeface()">
+	</div>
+	
+	<div class="facesize selector">
+		Face Size:</br>
+		<input type="range" id="faces" name="faces" min="1" max="13" value="1" step="1" onchange="changefacesize()">
+	</div>
+	
+	<div class="eyecolor selector" id="eyecolor">
+		Eye Color:</br>
+		<label id="eyecolor-1" class="eyecolor-item selected"><input type="radio" name="eye" checked value="1" onclick="changeeye()"><img src="images/eye1.png"></img></label>
+		<label id="eyecolor-2" class="eyecolor-item"><input type="radio" name="eye" value="2" onclick="changeeye()"><img src="images/eye2.png"></img></label>
+		<label id="eyecolor-3" class="eyecolor-item"><input type="radio" name="eye" value="3" onclick="changeeye()"><img src="images/eye3.png"></img></label>
+		<label id="eyecolor-4" class="eyecolor-item"><input type="radio" name="eye" value="4" onclick="changeeye()"><img src="images/eye4.png"></img></label>
+		<label id="eyecolor-5" class="eyecolor-item"><input type="radio" name="eye" value="5" onclick="changeeye()"><img src="images/eye5.png"></img></label>
+	</div>
+
+	<div class="hair selector">
+		Hair:</br>
+		<input type="range" id="hair" name="hair" min="1" max="430" value="1" step="1" onchange="changehair()">
+	</div>
+
+<div class="done">
+		<input type="button" class="reset" value="Go Back" onclick="goback()">
+		<input type="submit" class="submit" value="Save" onclick="save()">
+	</div>
+</form>
+</div>
+<script>
+var body = document.getElementById('body');
+var creator = document.getElementById('creator');
+var creator2 = document.getElementById('creator2');
+creator.style.visibility = 'hidden';
+document.getElementById('creator2').style.display = 'none';
+var skincolor = document.getElementById('skincolor').value;
+
+function openCreator(show) {
+			creator.style.visibility = 'inherit';
+			changesex(1);
+			changeskin();
+			changebody();
+}
+
+function reset() {
+	changesex(1);
+	document.getElementById('fat').value = 1;
+	changeskin();
+	changeface();
+}
+
+function next() {
+	document.getElementById('creator').style.display = 'none';
+	document.getElementById('creator2').style.display = 'flex';
+	changeface();
+}
+
+function goback() {
+	var r = confirm("If you go back, all current settings will be reseted!");
+	if (r == true) {
+	document.getElementById('creator').style.display = 'flex';
+	document.getElementById('creator2').style.display = 'none';
+	changesex(1);
+	document.getElementById('fat').value = 1;
+	changebody();
+	document.getElementById('skincolor-1').classList.add('selected');
+	for (let i = 1; i <= 6; i++) {
+				if (document.getElementById('skincolor-' + i).classList.contains('selected'))
+					document.getElementById('skincolor-' + i).classList.remove('selected');
+			}
+	changeskin();
+	document.getElementById('face').value = 1;
+	document.getElementById('faces').value = 1;
+	document.getElementById('hair').value = 1;
+	$.post('http:/redemrp_skin/changeFace', JSON.stringify(1));
+	$.post('http:/redemrp_skin/changeFacesize', JSON.stringify({faces: 1, face: 1}));
+	$.post('http:/redemrp_skin/changeEye', JSON.stringify(1));
+	$.post('http:/redemrp_skin/changeHair', JSON.stringify(1));
+	
+	} else {
+	}
+	
+}
+
+function changesex(value) {
+			var sex = value;
+			if (value === 1)
+				document.getElementById('sex-' + 2).classList.remove('sex-item-selected');
+			else 
+				document.getElementById('sex-' + 1).classList.remove('sex-item-selected');
+
+			document.getElementById('sex-' + value).classList.add('sex-item-selected');
+			$.post('http:/redemrp_skin/changeSex', JSON.stringify(sex));
+			setTimeout(function(){
+			$.post('http:/redemrp_skin/changeBody', JSON.stringify({grubosc: 1, face: 1}));
+			}, 1500);
+		}
+function changebody() {
+			var grubosc = document.getElementById('fat').value;
+			var face = document.getElementById('face').value;
+			//console.log(grubosc);
+			$.post('http:/redemrp_skin/changeBody', JSON.stringify({grubosc: grubosc, face: face}));
+		}
+function changeface() {
+			var face = document.getElementById('face').value;
+			//console.log(face);
+			$.post('http:/redemrp_skin/changeFace', JSON.stringify(face));
+		}
+function changefacesize() {
+			var faces = document.getElementById('faces').value;
+			var face = document.getElementById('face').value;
+			//console.log(face);
+			$.post('http:/redemrp_skin/changeFacesize', JSON.stringify({faces: faces, face: face}));
+		}
+function changeskin() {
+			var skin = document.querySelector('input[name="skin"]:checked').value;
+			for (let i = 1; i <= 6; i++) {
+				if (document.getElementById('skincolor-' + i).classList.contains('selected'))
+					document.getElementById('skincolor-' + i).classList.remove('selected');
+			}
+
+			document.getElementById('skincolor-' + skin).classList.add('selected');
+			//console.log(skin);
+			$.post('http:/redemrp_skin/changeSkin', JSON.stringify(skin));
+		}
+function changeeye() {
+			var eye = document.querySelector('input[name="eye"]:checked').value;
+			for (let i = 1; i <= 5; i++) {
+				if (document.getElementById('eyecolor-' + i).classList.contains('selected'))
+					document.getElementById('eyecolor-' + i).classList.remove('selected');
+			}
+
+			document.getElementById('eyecolor-' + eye).classList.add('selected');
+			$.post('http:/redemrp_skin/changeEye', JSON.stringify(eye));
+		}
+function changehair() {
+			var hair = document.getElementById('hair').value;
+			//console.log(hair);
+			$.post('http:/redemrp_skin/changeHair', JSON.stringify(hair));
+		}
+function save() {
+	var sex1 = document.querySelector('input[name="sex"]:checked').value;
+	var grubosc1 = document.getElementById('fat').value;
+	var face1 = document.getElementById('face').value;
+	var face2 = document.getElementById('faces').value;
+	var skin1 = document.querySelector('input[name="skin"]:checked').value;
+	var eye1 = document.querySelector('input[name="eye"]:checked').value;
+	var hair1 = document.getElementById('hair').value;
+	//console.log(sex1 + grubosc1 + face1 + skin1 + eye1 + hair1);
+	$.post('http:/redemrp_skin/saveSkin', JSON.stringify({sex: sex1, grubosc: grubosc1, face: face1, skin: skin1, eye: eye1, hair: hair1, faces: face2}));
+	document.getElementById('creator').style.display = 'none';
+	document.getElementById('creator2').style.display = 'none';
+}
+</script>
+</body>
+</html>
