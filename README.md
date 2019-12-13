@@ -21,9 +21,9 @@ cause its unstable and pre-released.
 If you find any bug, please open the issue on Github(here).
 
 ## 4. Credits
-http://github.com/amakuu
+[amakuu](http://github.com/amakuu)
 
-@imThaku - for sending me CSV files with all Character components
+[imThaku](https://github.com/imThaku) - for sending me CSV files with all Character components
 
 
 ## Disclaimer
