@@ -4,6 +4,7 @@ Character Creation System for RedEM:RP framework
 ## 1. Requirements
 
 [redem](https://github.com/kanersps/redem)
+
 [redem-roleplay](https://github.com/RedEM-RP/redem_roleplay/)
 
 ## 2. Installation
