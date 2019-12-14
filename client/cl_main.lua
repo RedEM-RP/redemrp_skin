@@ -104,7 +104,7 @@ local sex = 1
 	sex = 2
 	end
 	local model2 = GetHashKey(model)
-	RequestModel(model)
+	RequestModel(model2)
 	Citizen.Wait(100)
 	if HasModelLoaded(model2) then
 		--print("LOADED 1")
