@@ -105,20 +105,21 @@ local sex = 1
 	end
 	local model2 = GetHashKey(model)
 	RequestModel(model2)
-	Citizen.Wait(100)
-	if HasModelLoaded(model2) then
-		--print("LOADED 1")
-		SetPlayerModel(player, model2, false)
-		Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
-		SetModelAsNoLongerNeeded(model2)
-		else 
-		--print("NOT LOADED AT 1")
-		RequestModel(model2)
-		Citizen.Wait(500)
-		SetPlayerModel(player, model2, false)
-		Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
-		SetModelAsNoLongerNeeded(model2)
-		end
+Citizen.CreateThread(function() 
+        local waiting = 0
+        while not HasModelLoaded(model2) do
+            waiting = waiting + 100
+            Citizen.Wait(100)
+			if waiting > 5000 then
+                print("Could not load ped")
+                break
+            end
+        end
+        Citizen.InvokeNative(0xED40380076A31506, PlayerId(), model2)   
+        Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
+	SetModelAsNoLongerNeeded(model2)
+        print("works")
+    end)
 	Citizen.Wait(100)	
 if sex == 1 then
 	local twarz = '0x' .. maleheads[tonumber(_skin.face)]
