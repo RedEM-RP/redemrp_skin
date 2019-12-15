@@ -62,7 +62,7 @@ end)
 
 RegisterNetEvent('redemrp_skin:openCreator')
 AddEventHandler('redemrp_skin:openCreator', function(source)
-	Wait(6000)
+	Wait(5000)
      SetNuiFocus(true, true)
 	 local ped = PlayerPedId()
 	 SetEntityCoords(ped, -329.24, 775.37, 120.65)
@@ -78,11 +78,8 @@ AddEventHandler('redemrp_skin:openCreator', function(source)
                 show = 1
       })
 end)
-RegisterCommand("delskin", function(source, args, rawCommand)
-local charId = args[1]
-    TriggerServerEvent('redemrp_skin:deleteSkin', charId)
-end)
-	
+
+
 RegisterCommand("loadskin", function(source, args, rawCommand)
      TriggerServerEvent("redemrp_skin:loadSkin", function(cb)
 	 end)
@@ -95,7 +92,7 @@ local player = PlayerId()
 local model = "mp_male"
 local torso = '0x' .. maletorsos[6]
 local legs = '0x' .. malelegs[5]
-local head = '0x' .. maleheads[11]
+local head = '0x' .. maleheads[8]
 local sex = 1
 --print (_skin.sex)
 
@@ -106,10 +103,10 @@ local sex = 1
 	model = "mp_female"
 	sex = 2
 	end
-	local model2 = GetHashKey("mp_male")
+	local model2 = GetHashKey(model)
 	if not HasModelLoaded(model2) then
-	  Citizen.InvokeNative(0xFA28FE3A6246FC30, model2) 
-end	  
+ 		Citizen.InvokeNative(0xFA28FE3A6246FC30, model2) 
+	end	  
 Citizen.CreateThread(function() 
         local waiting = 0
         while not HasModelLoaded(model2) do
@@ -122,7 +119,7 @@ Citizen.CreateThread(function()
         end
         Citizen.InvokeNative(0xED40380076A31506, PlayerId(), model2)   
         Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
-		SetModelAsNoLongerNeeded(model2)
+	SetModelAsNoLongerNeeded(model2)
         print("works")
     end)
 	Citizen.Wait(100)	
@@ -280,9 +277,6 @@ local model2 = GetHashKey(model)
 	else end
 end)
 
-
-	
-
 RegisterNetEvent('redemrp_skin:changeSex2')
 AddEventHandler('redemrp_skin:changeSex2', function(model)
 local model2 = model
@@ -300,9 +294,8 @@ Citizen.CreateThread(function()
             end
         end
         Citizen.InvokeNative(0xED40380076A31506, PlayerId(), model2)
-            
-       Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
-		SetModelAsNoLongerNeeded(model2)
+             Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
+        SetModelAsNoLongerNeeded(model2)
         print("works")
 
     end)
@@ -329,30 +322,6 @@ Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(twarz2),true,tru
 end
 end)
 
-RegisterNUICallback('changeFacev2', function()
-print("bagno")
-local model2 = "mp_male"
-
-RequestModel(model2)
-
-Citizen.CreateThread(function() 
-        local waiting = 0
-        while not HasModelLoaded(model2) do
-            waiting = waiting + 100
-            Citizen.Wait(100)
-            if waiting > 5000 then
-                print("Could not load ped")
-                break
-            end
-        end
-        Citizen.InvokeNative(0xED40380076A31506, PlayerId(), model2)
-            
-       Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
-		SetModelAsNoLongerNeeded(model2)
-        print("works")
-
-    end)
-end)
 RegisterNUICallback('changeSkin', function(data, cb)
 local skin = data
 local torso = '0x' .. maletorsos[6]
