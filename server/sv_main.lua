@@ -54,3 +54,22 @@ AddEventHandler('redemrp_db:retrieveSkin', function(identifier, charid, callback
 		end
 	end)
 end)
+
+RegisterServerEvent("redemrp_skin:deleteSkin")
+AddEventHandler("redemrp_skin:deleteSkin", function(charid, Callback) 
+    local _source = source
+    local id
+    for k,v in ipairs(GetPlayerIdentifiers(_source))do
+        if string.sub(v, 1, string.len("steam:")) == "steam:" then
+            id = v
+            break
+        end
+    end
+	
+  local Callback = callback
+	MySQL.Async.fetchAll('DELETE FROM skins WHERE `identifier`=@identifier AND `charid`=@charid;', {identifier = id, charid = charid}, function(result)
+		if result then
+		else
+		end
+	end)
+end)
