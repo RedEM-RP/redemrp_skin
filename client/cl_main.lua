@@ -104,7 +104,9 @@ local sex = 1
 	sex = 2
 	end
 	local model2 = GetHashKey(model)
-	RequestModel(model2)
+	if not HasModelLoaded(model2) then
+ 		Citizen.InvokeNative(0xFA28FE3A6246FC30, model2) 
+	end	  
 Citizen.CreateThread(function() 
         local waiting = 0
         while not HasModelLoaded(model2) do
