@@ -87,146 +87,156 @@ end)
 
 RegisterNetEvent('redemrp_skin:applySkin')
 AddEventHandler('redemrp_skin:applySkin', function(skin)
-local _skin = json.decode(skin)
-local player = PlayerId()
-local model = "mp_male"
-local torso = '0x' .. maletorsos[6]
-local legs = '0x' .. malelegs[5]
-local head = '0x' .. maleheads[8]
-local sex = 1
---print (_skin.sex)
-
-	if _skin.sex == "male" then
-	model = "mp_male"
-	sex = 1
-	else
-	model = "mp_female"
-	sex = 2
-	end
-	local model2 = GetHashKey(model)
-	if not HasModelLoaded(model2) then
- 		Citizen.InvokeNative(0xFA28FE3A6246FC30, model2) 
-	end	  
-Citizen.CreateThread(function() 
+    local _skin = json.decode(skin)
+    local player = PlayerId()
+    local model = "mp_male"
+    local torso = '0x' .. maletorsos[6]
+    local legs = '0x' .. malelegs[5]
+    local head = '0x' .. maleheads[11]
+    local sex = 1
+    for i = 1 , 5 do
+        SetEntityAlpha(PlayerPedId(), 0)
+        --print (_skin.sex)
+        if _skin.sex == "male" then
+            model = "mp_male"
+            sex = 1
+        else
+            model = "mp_female"
+            sex = 2
+        end
+        local model2 = GetHashKey(model)
+        if not HasModelLoaded(model2) then
+            Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
+        end
         local waiting = 0
         while not HasModelLoaded(model2) do
+            Citizen.InvokeNative(0xFA28FE3A6246FC30, model2)
             waiting = waiting + 100
             Citizen.Wait(100)
-			if waiting > 5000 then
+            if waiting > 5000 then
                 print("Could not load ped")
                 break
             end
         end
-        Citizen.InvokeNative(0xED40380076A31506, PlayerId(), model2)   
+        Citizen.InvokeNative(0xED40380076A31506, PlayerId(), model2)
         Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
-	SetModelAsNoLongerNeeded(model2)
+        SetModelAsNoLongerNeeded(model2)
         print("works")
-    end)
-	Citizen.Wait(100)	
-if sex == 1 then
-	local twarz = '0x' .. maleheads[tonumber(_skin.face)]
-	local faces = math.floor(tonumber(_skin.faces) + 109)
-	--print (_skin.fat)
-	local size = math.floor(tonumber(_skin.fat) + 123)
-	local oczy = '0x' .. maleeyes[tonumber(_skin.eye)]
-	local wlosy = '0x' .. malehairs[tonumber(_skin.hair)]
-	if tonumber(_skin.skin) == 1 then
-	torso = '0x' .. maletorsos[6]
-	legs = '0x' .. malelegs[5]
-	head = '0x' .. maleheads[8]
-	elseif tonumber(_skin.skin) == 2 then
-	torso = '0x' .. maletorsos[2]
-	legs = '0x' .. malelegs[5]
-	head = '0x' .. maleheads[5]
-	elseif tonumber(_skin.skin) == 3 then
-	torso = '0x' .. maletorsos[4]
-	legs = '0x' .. malelegs[1]
-	head = '0x' .. maleheads[11]
-	elseif tonumber(_skin.skin) == 4 then
-	torso = '0x' .. maletorsos[7]
-	legs = '0x' .. malelegs[3]
-	head = '0x' .. maleheads[3]
-	elseif tonumber(_skin.skin) == 5 then
-	torso = '0x' .. maletorsos[5]
-	legs = '0x' .. malelegs[4]
-	head = '0x' .. maleheads[4]
-	elseif tonumber(_skin.skin) == 6 then
-	torso = '0x' .. maletorsos[3]
-	legs = '0x' .. malelegs[2]
-	head = '0x' .. maleheads[9]
-	else end
-	Citizen.Wait(1000)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(torso),true,true,true)
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(legs),true,true,true)
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(head),true,true,true)
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xA5BAE410B03E7371 ,PlayerPedId(),math.floor(size),true,true) -- Body SIZE
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xA5BAE410B03E7371 ,PlayerPedId(),math.floor(faces),true,true) -- FACE SIZE
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(twarz),true,true,true) -- FACE
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(oczy),true,true,true) -- EYES
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(wlosy),true,true,true) -- HAIR
-else
-local twarz2 = '0x' .. femaleheads[tonumber(_skin.face)]
-local faces2 = math.floor(tonumber(_skin.faces) + 95)
-local oczy2 = '0x' .. femaleeyes[tonumber(_skin.eye)]
-local wlosy2 = '0x' .. femalehairs[tonumber(_skin.hair)]
-local size2 = math.floor(tonumber(_skin.fat) + 109)
-local torso2 = '0x' .. femaletorsos[6]
-local legs2 = '0x' .. femalelegs[1]
-local head2 = '0x' .. femaleheads[6]
-if tonumber(_skin.skin) == 1 then
-	torso2 = '0x' .. femaletorsos[6]
-	legs2 = '0x' .. femalelegs[1]
-	head2 = '0x' .. femaleheads[6]
-	elseif tonumber(_skin.skin) == 2 then
-	torso2 = '0x' .. femaletorsos[3]
-	legs2 = '0x' .. femalelegs[2]
-	head2 = '0x' .. femaleheads[11]
-	elseif tonumber(_skin.skin) == 3 then
-	torso2 = '0x' .. femaletorsos[2]
-	legs2 = '0x' .. femalelegs[3]
-	head2 = '0x' .. femaleheads[9]
-	elseif tonumber(_skin.skin) == 4 then
-	torso2 = '0x' .. femaletorsos[4]
-	legs2 = '0x' .. femalelegs[5]
-	head2 = '0x' .. femaleheads[3]
-	elseif tonumber(_skin.skin) == 5 then
-	torso2 = '0x' .. femaletorsos[8]
-	legs2 = '0x' .. femalelegs[6]
-	head2 = '0x' .. femaleheads[2]
-	elseif tonumber(_skin.skin) == 6 then
-	torso2 = '0x' .. femaletorsos[9]
-	legs2 = '0x' .. femalelegs[8]
-	head2 = '0x' .. femaleheads[10]
-	else end
-	Citizen.Wait(1000)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(torso2),true,true,true)
-	Citizen.Wait(500)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(legs2),true,true,true)
-	Citizen.Wait(500)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(head2),true,true,true)
-	Citizen.Wait(500)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x10F5497A,true,true,true) -- PANTS
-	Citizen.Wait(500)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x14511493,true,true,true) -- COAT
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xA5BAE410B03E7371 ,PlayerPedId(),math.floor(size2),true,true) -- Body SIZE
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xA5BAE410B03E7371 ,PlayerPedId(),math.floor(faces2),true,true) -- FACE SIZE
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(twarz2),true,true,true) -- FACE
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(oczy2),true,true,true) -- EYES
-	Citizen.Wait(300)
-	Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(wlosy2),true,true,true) -- HAIR
-end		
+        SetEntityAlpha(PlayerPedId(), 0)
+        Citizen.Wait(2000)
+        if sex == 1 then
+            local twarz = '0x' .. maleheads[tonumber(_skin.face)]
+            local faces = math.floor(tonumber(_skin.faces) + 109)
+            --print (_skin.fat)
+            local size = math.floor(tonumber(_skin.fat) + 123)
+            local oczy = '0x' .. maleeyes[tonumber(_skin.eye)]
+            local wlosy = '0x' .. malehairs[tonumber(_skin.hair)]
+            if tonumber(_skin.skin) == 1 then
+                torso = '0x' .. maletorsos[6]
+                legs = '0x' .. malelegs[5]
+                head = '0x' .. maleheads[8]
+            elseif tonumber(_skin.skin) == 2 then
+                torso = '0x' .. maletorsos[2]
+                legs = '0x' .. malelegs[5]
+                head = '0x' .. maleheads[5]
+            elseif tonumber(_skin.skin) == 3 then
+                torso = '0x' .. maletorsos[4]
+                legs = '0x' .. malelegs[1]
+                head = '0x' .. maleheads[11]
+            elseif tonumber(_skin.skin) == 4 then
+                torso = '0x' .. maletorsos[7]
+                legs = '0x' .. malelegs[3]
+                head = '0x' .. maleheads[3]
+            elseif tonumber(_skin.skin) == 5 then
+                torso = '0x' .. maletorsos[5]
+                legs = '0x' .. malelegs[4]
+                head = '0x' .. maleheads[4]
+            elseif tonumber(_skin.skin) == 6 then
+                torso = '0x' .. maletorsos[3]
+                legs = '0x' .. malelegs[2]
+                head = '0x' .. maleheads[9]
+            else end
+            Citizen.Wait(1000)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(torso),true,true,true)
+            Citizen.Wait(500)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(legs),true,true,true)
+            Citizen.Wait(500)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(head),true,true,true)
+            Citizen.Wait(500)
+            Citizen.InvokeNative(0xA5BAE410B03E7371 ,PlayerPedId(),math.floor(size),true,true) -- Body SIZE
+            Citizen.Wait(500)
+            Citizen.InvokeNative(0xA5BAE410B03E7371 ,PlayerPedId(),math.floor(faces),true,true) -- FACE SIZE
+            Citizen.Wait(500)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(twarz),true,true,true) -- FACE
+            Citizen.Wait(500)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(oczy),true,true,true) -- EYES
+            Citizen.Wait(500)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(wlosy),true,true,true) -- HAIR
+            Citizen.Wait(3000)
+        else
+            local twarz2 = '0x' .. femaleheads[tonumber(_skin.face)]
+            local faces2 = math.floor(tonumber(_skin.faces) + 95)
+            local oczy2 = '0x' .. femaleeyes[tonumber(_skin.eye)]
+            local wlosy2 = '0x' .. femalehairs[tonumber(_skin.hair)]
+            local size2 = math.floor(tonumber(_skin.fat) + 109)
+            local torso2 = '0x' .. femaletorsos[6]
+            local legs2 = '0x' .. femalelegs[1]
+            local head2 = '0x' .. femaleheads[6]
+            if tonumber(_skin.skin) == 1 then
+                torso2 = '0x' .. femaletorsos[6]
+                legs2 = '0x' .. femalelegs[1]
+                head2 = '0x' .. femaleheads[6]
+            elseif tonumber(_skin.skin) == 2 then
+                torso2 = '0x' .. femaletorsos[3]
+                legs2 = '0x' .. femalelegs[2]
+                head2 = '0x' .. femaleheads[11]
+            elseif tonumber(_skin.skin) == 3 then
+                torso2 = '0x' .. femaletorsos[2]
+                legs2 = '0x' .. femalelegs[3]
+                head2 = '0x' .. femaleheads[9]
+            elseif tonumber(_skin.skin) == 4 then
+                torso2 = '0x' .. femaletorsos[4]
+                legs2 = '0x' .. femalelegs[5]
+                head2 = '0x' .. femaleheads[3]
+            elseif tonumber(_skin.skin) == 5 then
+                torso2 = '0x' .. femaletorsos[8]
+                legs2 = '0x' .. femalelegs[6]
+                head2 = '0x' .. femaleheads[2]
+            elseif tonumber(_skin.skin) == 6 then
+                torso2 = '0x' .. femaletorsos[9]
+                legs2 = '0x' .. femalelegs[8]
+                head2 = '0x' .. femaleheads[10]
+            else end
+            Citizen.Wait(1000)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(torso2),true,true,true)
+            Citizen.Wait(500)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(legs2),true,true,true)
+            Citizen.Wait(500)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(head2),true,true,true)
+            Citizen.Wait(500)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x10F5497A,true,true,true) -- PANTS
+            --Citizen.Wait(500)
+            --Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x14511493,true,true,true) -- COAT
+            Citizen.Wait(300)
+            Citizen.InvokeNative(0xA5BAE410B03E7371 ,PlayerPedId(),math.floor(size2),true,true) -- Body SIZE
+            Citizen.Wait(300)
+            Citizen.InvokeNative(0xA5BAE410B03E7371 ,PlayerPedId(),math.floor(faces2),true,true) -- FACE SIZE
+            Citizen.Wait(300)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(twarz2),true,true,true) -- FACE
+            Citizen.Wait(300)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(oczy2),true,true,true) -- EYES
+            Citizen.Wait(300)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(wlosy2),true,true,true) -- HAIR
+            Citizen.Wait(3000)
+
+        end
+    end
+    print("load cloath")
+    SetEntityAlpha(PlayerPedId(), 255)
+    TriggerServerEvent("redemrp_clothing:loadClothes", 1, function(cb)
+        end)
 end)
+
 
 RegisterNUICallback('saveSkin', function(data, cb)
 SetNuiFocus(false, false)
