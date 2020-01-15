@@ -94,7 +94,7 @@ AddEventHandler('redemrp_skin:applySkin', function(skin)
     local legs = '0x' .. malelegs[5]
     local head = '0x' .. maleheads[11]
     local sex = 1
-    for i = 1 , 5 do
+    for i = 1 , 2 do
         SetEntityAlpha(PlayerPedId(), 0)
         --print (_skin.sex)
         if _skin.sex == "male" then
@@ -123,7 +123,7 @@ AddEventHandler('redemrp_skin:applySkin', function(skin)
         SetModelAsNoLongerNeeded(model2)
         print("works")
         SetEntityAlpha(PlayerPedId(), 0)
-        Citizen.Wait(2000)
+        Citizen.Wait(500)
         if sex == 1 then
             local twarz = '0x' .. maleheads[tonumber(_skin.face)]
             local faces = math.floor(tonumber(_skin.faces) + 109)
@@ -164,15 +164,15 @@ AddEventHandler('redemrp_skin:applySkin', function(skin)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(head),true,true,true)
             Citizen.Wait(500)
             Citizen.InvokeNative(0xA5BAE410B03E7371 ,PlayerPedId(),math.floor(size),true,true) -- Body SIZE
-            Citizen.Wait(500)
+            Citizen.Wait(300)
             Citizen.InvokeNative(0xA5BAE410B03E7371 ,PlayerPedId(),math.floor(faces),true,true) -- FACE SIZE
-            Citizen.Wait(500)
+            Citizen.Wait(300)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(twarz),true,true,true) -- FACE
-            Citizen.Wait(500)
+            Citizen.Wait(300)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(oczy),true,true,true) -- EYES
-            Citizen.Wait(500)
+            Citizen.Wait(300)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(wlosy),true,true,true) -- HAIR
-            Citizen.Wait(3000)
+            Citizen.Wait(1000)
         else
             local twarz2 = '0x' .. femaleheads[tonumber(_skin.face)]
             local faces2 = math.floor(tonumber(_skin.faces) + 95)
@@ -227,7 +227,7 @@ AddEventHandler('redemrp_skin:applySkin', function(skin)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(oczy2),true,true,true) -- EYES
             Citizen.Wait(300)
             Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(wlosy2),true,true,true) -- HAIR
-            Citizen.Wait(3000)
+            Citizen.Wait(1000)
 
         end
     end
