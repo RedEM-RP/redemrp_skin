@@ -231,13 +231,13 @@ AddEventHandler('redemrp_skin:applySkin', function(skin)
 
         end
     end
-    print("load cloath")
     if Config.usingClothing then
+	print("load cloath")
         TriggerServerEvent("redemrp_clothing:loadClothes", 1, function(cb)
+	end)
     else
-    SetEntityAlpha(PlayerPedId(), 255)
+	SetEntityAlpha(PlayerPedId(), 255)
     end
-  end)
 end)
 
 
