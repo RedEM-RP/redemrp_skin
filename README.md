@@ -14,6 +14,8 @@ Put the redemrp_skin into [redemrp] folder in your resources.
 
 Add ```ensure redemrp_skin``` in server.cfg
 
+Set Config.usingClothing to true in config.lua if using redemrp_clothing
+
 
 ## 3. Bugs and Errors
 We are not providing the support for this resource for now,
