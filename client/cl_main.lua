@@ -232,9 +232,12 @@ AddEventHandler('redemrp_skin:applySkin', function(skin)
         end
     end
     print("load cloath")
+    if Config.usingClothing then
+        TriggerServerEvent("redemrp_clothing:loadClothes", 1, function(cb)
+    else
     SetEntityAlpha(PlayerPedId(), 255)
-    TriggerServerEvent("redemrp_clothing:loadClothes", 1, function(cb)
-        end)
+    end
+  end)
 end)
 
 
