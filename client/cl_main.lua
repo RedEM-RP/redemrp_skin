@@ -236,7 +236,10 @@ AddEventHandler('redemrp_skin:applySkin', function(skin)
         TriggerServerEvent("redemrp_clothing:loadClothes", 1, function(cb)
 	end)
     else
-	SetEntityAlpha(PlayerPedId(), 255)
+	for i=51, 255, 51 do
+   	    Wait(1)
+	    SetEntityAlpha(PlayerPedId(), i)
+	end
     end
 end)
 
