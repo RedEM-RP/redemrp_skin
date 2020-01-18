@@ -1,2 +1,2 @@
 Config = {}
-Config.usingClothing = false --Set true if using redemrp_clothing
+Config.usingClothing = true --Set true if using redemrp_clothing
