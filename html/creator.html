@@ -71,6 +71,11 @@
 		<input type="range" id="hair" name="hair" min="1" max="430" value="1" step="1" onchange="changehair()">
 	</div>
 
+	<div class="beard selector">
+		Beard:</br>
+		<input type="range" id="fhair" name="fhair" min="1" max="410" value="1" step="1" onchange="changebeard()">
+	</div>
+
 <div class="done">
 		<input type="button" class="reset" value="Go Back" onclick="goback()">
 		<input type="submit" class="submit" value="Save" onclick="save()">
@@ -122,10 +127,12 @@ function goback() {
 	document.getElementById('face').value = 1;
 	document.getElementById('faces').value = 1;
 	document.getElementById('hair').value = 1;
+	document.getElementById('fhair').value = 1;
 	$.post('http:/redemrp_skin/changeFace', JSON.stringify(1));
 	$.post('http:/redemrp_skin/changeFacesize', JSON.stringify({faces: 1, face: 1}));
 	$.post('http:/redemrp_skin/changeEye', JSON.stringify(1));
 	$.post('http:/redemrp_skin/changeHair', JSON.stringify(1));
+	$.post('http:/redemrp_skin/changeBeard', JSON.stringify(1));
 	
 	} else {
 	}
@@ -188,6 +195,11 @@ function changehair() {
 			//console.log(hair);
 			$.post('http:/redemrp_skin/changeHair', JSON.stringify(hair));
 		}
+function changebeard() {
+			var fhair = document.getElementById('fhair').value;
+			//console.log(hair);
+			$.post('http:/redemrp_skin/changeBeard', JSON.stringify(fhair));
+		}
 function save() {
 	var sex1 = document.querySelector('input[name="sex"]:checked').value;
 	var grubosc1 = document.getElementById('fat').value;
@@ -196,8 +208,9 @@ function save() {
 	var skin1 = document.querySelector('input[name="skin"]:checked').value;
 	var eye1 = document.querySelector('input[name="eye"]:checked').value;
 	var hair1 = document.getElementById('hair').value;
+	var fhair1 = document.getElementById('fhair').value;
 	//console.log(sex1 + grubosc1 + face1 + skin1 + eye1 + hair1);
-	$.post('http:/redemrp_skin/saveSkin', JSON.stringify({sex: sex1, grubosc: grubosc1, face: face1, skin: skin1, eye: eye1, hair: hair1, faces: face2}));
+	$.post('http:/redemrp_skin/saveSkin', JSON.stringify({sex: sex1, grubosc: grubosc1, face: face1, skin: skin1, eye: eye1, hair: hair1, fhair: fhair1, faces: face2}));
 	document.getElementById('creator').style.display = 'none';
 	document.getElementById('creator2').style.display = 'none';
 }
