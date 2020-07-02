@@ -1,3 +1,4 @@
+local ReturnCoords = nil
 local adding = true
 local adding2 = true
 local sex = 1
@@ -66,6 +67,7 @@ AddEventHandler('redemrp_skin:openCreator', function(source)
 	Wait(5000)
     SetNuiFocus(true, true)
     local ped = PlayerPedId()
+	ReturnCoords = GetEntityCoords(ped)
 	SetEntityCoords(ped, -329.24, 775.37, 120.65)
 	SetEntityHeading(ped, 245.05)
 	cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", -326.12,774.84,121.64, 300.00,0.00,0.00, 40.00, false, 0)
@@ -245,6 +247,7 @@ RegisterNUICallback('saveSkin', function(data, cb)
     }
     local ped = PlayerPedId()
 	FreezeEntityPosition(ped, false)
+	SetEntityCoords(ped, ReturnCoords)
 	DisplayHud(true)
 	DisplayRadar(true)
 	SetCamActive(cam, false)
