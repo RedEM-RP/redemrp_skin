@@ -1,0 +1,799 @@
+<html>
+
+<head>
+    <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script> -->
+    <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="skinCreator">
+
+        <!-- Tabs -->
+        <div class="tab">
+            <!-- <a href="#" class="identity disabled" data-link="identity">Identité</a> -->
+			<a href="#" class="visage active" data-link="visage">Appearance</a>
+            <a href="#" class="pilosite" data-link="pilosite">Hair</a>
+            <a href="#" class="details" data-link="details">Skin details</a>
+			<!-- <a href="#" class="makeup active" data-link="makeup">Makijaż</a> -->
+        </div>
+
+        <form id="formSkinCreator">
+
+            <!-- BLOCK VISAGE -->
+            <div class="block visage active">
+
+                <div class="group">
+                    <h2>-</h2>
+                    <div class="input">
+                        <div class="label">Sex</div>
+                        <div class="type-img">
+                            <label for="pere1">
+                                <input type="radio" name="sex" class="sex" value="1" id="pere1" checked>
+                                <div class="img"><img src="assets/heritage/Face-0.png" alt=""></div>
+                            </label>
+                            <label for="pere2">
+                                <input type="radio" name="sex" class="sex" value="2" id="pere2">
+                                <div class="img"><img src="assets/heritage/Face-1.png" alt=""></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Eye Color</div>
+                        <div class="type-radio">
+                            <label for="eye1">
+                                <input type="radio" name="eyecolor" class="eyecolor" value="1" id="eye1" checked>
+                                <span class="color" style='background: url("assets/eye1.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                            <label for="eye2">
+                                <input type="radio" name="eyecolor" class="eyecolor" value="2" id="eye2">
+                                <span class="color" style='background: url("assets/eye2.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                            <label for="eye3">
+                                <input type="radio" name="eyecolor" class="eyecolor" value="3" id="eye3">
+                                <span class="color" style='background: url("assets/eye3.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                            <label for="eye4">
+                                <input type="radio" name="eyecolor" class="eyecolor" value="4" id="eye4">
+                                <span class="color" style='background: url("assets/eye4.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                            <label for="eye5">
+                                <input type="radio" name="eyecolor" class="eyecolor" value="5" id="eye5">
+                                <span class="color" style='background: url("assets/eye5.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group">
+                    <h2>BODY</h2>
+                    <div class="input">
+                        <div class="label">Skin color</div>
+                        <div class="type-radio">
+                            <label for="p1">
+                                <input type="radio" name="skincolor" class="skincolor" value="1" id="p1" checked>
+                                <span class="color" style='background: url("assets/skin1.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                            <label for="p2">
+                                <input type="radio" name="skincolor" class="skincolor" value="2" id="p2">
+                                <span class="color" style='background: url("assets/skin2.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                            <label for="p3">
+                                <input type="radio" name="skincolor" class="skincolor" value="3" id="p3">
+                                <span class="color" style='background: url("assets/skin2.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                            <label for="p4">
+                                <input type="radio" name="skincolor" class="skincolor" value="4" id="p4">
+                                <span class="color" style='background: url("assets/skin4.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                            <label for="p5">
+                                <input type="radio" name="skincolor" class="skincolor" value="5" id="p5">
+                                <span class="color" style='background: url("assets/skin5.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                            <label for="p6">
+                                <input type="radio" name="skincolor" class="skincolor" value="6" id="p6">
+                                <span class="color" style='background: url("assets/skin5.png") no-repeat;  background-position: center;'></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="vetements">
+                        <div class="group">
+                            <h2>Body Size</h2>
+                            <div class="label-value" data-legend=""></div>
+                            <ul class="bodysize">
+                                <button type="button" class="arrow arrowvetement-left">&nbsp;</button>
+                                <li data="4">Super-Slim</li>
+                                <li data="5">Slim</li>
+                                <li data="3" class="active">Normal</li>
+                                <li data="1">Obese</li>
+                                <li data="2">Very fat</li>
+                                <button type="button" class="arrow arrowvetement-right">&nbsp;</button>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="group">
+                    <h2>Face</h2>
+
+                    <div class="input">
+                        <div class="label">Face</div>
+                        <div class="label-value" data-legend="/124"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="face" min="1" max="124">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <!-- <div class="input"> -->
+                        <!-- <div class="label">Rozmiar Twarzy</div> -->
+                        <!-- <div class="label-value" data-legend="/13"></div> -->
+                        <!-- <div class="type-range"> -->
+                            <!-- <a href="#" class="arrow arrow-left">&nbsp;</a> -->
+                            <!-- <input value="0" type="range" class="face_size" min="1" max="13"> -->
+                            <!-- <a href="#" class="arrow arrow-right">&nbsp;</a> -->
+                        <!-- </div> -->
+                    <!-- </div> -->
+
+                    <div class="input">
+                        <div class="label">Face width</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="face_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="group">
+                    <h2>Eyebrows</h2>
+                    <div class="input">
+                        <div class="label">Eyebrow height</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="eyebrow_height" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Eyebrow width</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="eyebrow_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Eyebrow depth</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="eyebrow_depth" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="group">
+                    <h2>Ears</h2>
+
+                    <div class="input">
+                        <div class="label">Ear length</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="ears_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Ear curvature</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="ears_angle" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+					
+			   <div class="input">
+                        <div class="label">Ears height</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="ears_height" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Ear lobe size</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="earlobe_size" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="group">
+                    <h2>Cheekbones</h2>
+
+                    <div class="input">
+                        <div class="label">Cheekbones height</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="cheekbones_height" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Cheekbones width</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="cheekbones_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Cheekbones depth</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="cheekbones_depth" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="group">
+                    <h2>Jaw</h2>
+
+                    <div class="input">
+                        <div class="label">Jaw height</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="jaw_height" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Jaw lenght</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="jaw_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Jaw depth</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="jaw_depth" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="group">
+                    <h2>Chin</h2>
+
+                    <div class="input">
+                        <div class="label">Chin height</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="chin_height" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Chin lenght</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="chin_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Chin depth</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="chin_depth" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="group">
+                    <h2>Eyelids</h2>
+
+                    <div class="input">
+                        <div class="label">Eyelids height</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="eyelid_height" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Eyelids lenght</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="eyelid_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="group">
+                    <h2>Eyes</h2>
+
+                    <div class="input">
+                        <div class="label">Eyes depth</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="eyes_depth" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Eyes curvature</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="eyes_angle" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Eye distance</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="eyes_distance" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="group">
+                    <h2>Nose</h2>
+
+                    <div class="input">
+                        <div class="label">Nose lenght</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="nose_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Nose size</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="nose_size" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Nose height</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="nose_height" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Nose rotation</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="nose_angle" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Nose curvature</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="nose_curvature" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Nostril distance</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="nostrils_distance" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="group">
+                    <h2>Lips</h2>
+
+                    <div class="input">
+                        <div class="label">Lips lenght</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="mouth_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Lips depth</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="mouth_depth" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Lips position(up/down)</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="mouth_x_pos" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Lips position(left/right)</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="mouth_y_pos" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Height of upper lip</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="upper_lip_height" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Width of upper lip</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="upper_lip_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Depth of upper lip</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="upper_lip_depth" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Height of lower lip</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="lower_lip_height" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Width of lower lip</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="lower_lip_width" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                    <div class="input">
+                        <div class="label">Depth of lower lip</div>
+                        <div class="label-value" data-legend="/100"></div>
+                        <div class="type-range">
+                            <a href="#" class="arrow arrow-left">&nbsp;</a>
+                            <input value="0" type="range" class="lower_lip_depth" min="-100" max="100">
+                            <a href="#" class="arrow arrow-right">&nbsp;</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+			
+			 <div class="block pilosite">
+                <div class="group">
+                  <h2>Hair/Beard</h2>
+                  <div class="input">
+                    <div class="label">Hair</div>
+                    <div class="label-value" data-legend="/430"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="hair" min="1" max="430">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>
+                  </div>
+				  
+				 <div id="beard">
+				    <div class="input">
+                    <div class="label">Beard</div>
+                    <div class="label-value" data-legend="/408"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="beard" min="1" max="408">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>
+                  </div>
+				  
+				  </div>
+				    </div>
+					  </div>
+					  
+					  
+		<div class="block details ">
+                <div class="group">
+                  <h2>Eyebrows</h2>
+                  <div class="input">
+                    <div class="label">Type</div>
+                    <div class="label-value" data-legend="/23"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="eyebrows_type" min="0" max="23">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>
+                  </div>				
+				  
+				      <div class="input">
+                    <div class="label">Opacity</div>
+                    <div class="label-value" data-legend="/100"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="eyebrows_opa" min="0" max="100">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>			
+				  </div>
+				  
+				  <div class="input">
+                    <div class="label">Palette ID</div>
+                    <div class="label-value" data-legend="/25"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="eyebrows_pal_id" min="1" max="25">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>			
+				  </div>
+				  
+				   <div class="input">
+                    <div class="label">Primary color</div>
+                    <div class="label-value" data-legend="/255"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="eyebrows_color_1" min="0" max="255">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>			
+				  </div>
+				  
+				     <div class="input">
+                    <div class="label">Secondary color</div>
+                    <div class="label-value" data-legend="/255"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="eyebrows_color_2" min="0" max="255">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>			
+				  </div>
+				  
+				     <div class="input">
+                    <div class="label">Tertiary color</div>
+                    <div class="label-value" data-legend="/255"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="eyebrows_color_3" min="0" max="255">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>			
+				  </div>
+				    </div>
+					
+			<div class="group">
+                  <h2>Scars</h2>
+                  <div class="input">
+                    <div class="label">Type</div>
+                    <div class="label-value" data-legend="/16"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="scars_type" min="0" max="16">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>
+                  </div>			  
+				  
+				      <div class="input">
+                    <div class="label">Opacity</div>
+                    <div class="label-value" data-legend="/100"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="scars_opa" min="0" max="100">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>			
+				  </div>		
+				</div>
+				<div class="group">
+                  <h2>Ageing</h2>
+                  <div class="input">
+                    <div class="label">Type</div>
+                    <div class="label-value" data-legend="/24"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="ageing_type" min="0" max="24">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>
+                  </div>
+				  
+				  
+				      <div class="input">
+                    <div class="label">Opacity</div>
+                    <div class="label-value" data-legend="/100"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="ageing_opa" min="0" max="100">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>			
+				  </div>
+				  
+				    </div>
+			<div class="group">
+                  <h2>Freckles</h2>
+                  <div class="input">
+                    <div class="label">Type</div>
+                    <div class="label-value" data-legend="/15"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="freckles_type" min="0" max="15">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>
+                  </div>				
+				  
+				      <div class="input">
+                    <div class="label">Opacity</div>
+                    <div class="label-value" data-legend="/100"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="freckles_opa" min="0" max="100">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>			
+				  </div>
+				 
+				    </div>
+					
+						<div class="group">
+                  <h2>Moles</h2>
+                  <div class="input">
+                    <div class="label">Type</div>
+                    <div class="label-value" data-legend="/16"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="moles_type" min="0" max="16">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>
+                  </div>				
+				  
+				      <div class="input">
+                    <div class="label">Opacity</div>
+                    <div class="label-value" data-legend="/100"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="moles_opa" min="0" max="100">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>			
+				  </div>
+				 
+				    </div>
+					
+				<div class="group">
+                  <h2>Spots</h2>
+                  <div class="input">
+                    <div class="label">Type</div>
+                    <div class="label-value" data-legend="/16"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="spots_type" min="0" max="16">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>
+                  </div>				
+				  
+				      <div class="input">
+                    <div class="label">Opacity</div>
+                    <div class="label-value" data-legend="/100"></div>
+                    <div class="type-range">
+                      <a href="#" class="arrow arrow-left">&nbsp;</a>
+                      <input value="0" type="range" class="spots_opa" min="0" max="100">
+                      <a href="#" class="arrow arrow-right">&nbsp;</a>
+                    </div>			
+				  </div>
+				 
+				    </div>
+					  </div>
+	
+
+            <!-- Submit -->
+            <button class="submit">Save</button>
+        </form>
+
+    </div>
+    <div class="rotation">
+        <div class="button">Q</div>
+        <div class="button">E</div>
+        <p>Rotate character</p>
+    </div>
+
+    <div class="popup confirmation">
+        <p>Are you sure you want to save your character?</p>
+        <div class="buttons">
+            <div class="button yes">Yes</div>
+            <div class="button no">No</div>
+        </div>
+    </div>
+
+    <!-- JS Scripts -->
+    <script src="front.js" type="text/javascript"></script>
+    <script src="script.js" type="text/javascript"></script>
+</body>
+
+</html>

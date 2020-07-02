@@ -1,25 +1,28 @@
 RegisterServerEvent('redemrp_skin:createSkin')
 AddEventHandler('redemrp_skin:createSkin', function(skin, cb)
 	local _skin = skin
-	local decode = json.decode(skin)
-	TriggerEvent('redemrp:getPlayerFromId', source, function(user)
+	local _source = source
+	local encode = json.encode(_skin)
+	TriggerEvent('redemrp:getPlayerFromId', _source, function(user)
 		local identifier = user.getIdentifier()
 		local charid = user.getSessionVar("charid")
 	TriggerEvent("redemrp_db:retrieveSkin", identifier, charid, function(call)
 	
 if call then
 
-	MySQL.Async.execute("UPDATE skins SET `skin`='" .. _skin .. "' WHERE `identifier`=@identifier AND `charid`=@charid", {identifier = identifier, charid = charid}, function(done)
+	MySQL.Async.execute("UPDATE skins SET `skin`='" .. encode .. "' WHERE `identifier`=@identifier AND `charid`=@charid", {identifier = identifier, charid = charid}, function(done)
 		end)
 else
-
+		TriggerEvent('redemrp_db:createStatus', _source)
+		print("status activated")
 	MySQL.Async.execute('INSERT INTO skins (`identifier`, `charid`, `skin`) VALUES (@identifier, @charid, @skin);',
 	{
 		identifier = identifier,
 		charid = charid,
-		skin = _skin
+		skin = encode
 	}, function(rowsChanged)
 		end)
+		
 end
 	end)
 
@@ -38,7 +41,8 @@ local _source = source
 		--print(skins[1].skin)
 		if skins[1] then
 		local skin = skins[1].skin
-		TriggerClientEvent("redemrp_skin:applySkin", _source, skin)
+		local test = json.decode(skin)
+		TriggerClientEvent("redemrp_skin:applySkin", _source, test)
 		else end
 		end)
 	end)
