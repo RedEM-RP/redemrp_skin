@@ -27,6 +27,7 @@ If you find any bug, please open the issue on Github(here).
 
 [imThaku](https://github.com/imThaku) - for sending me CSV files with all Character components
 
+[Naikzer](https://github.com/Naikzer) 
 
 ## Disclaimer
 Please do not add the clothing features to this!
