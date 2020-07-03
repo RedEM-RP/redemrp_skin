@@ -32,7 +32,7 @@ end)
 RegisterServerEvent('redemrp_skin:loadSkin')
 AddEventHandler('redemrp_skin:loadSkin', function()
 local _source = source
-	TriggerEvent('redemrp:getPlayerFromId', source, function(user)
+	TriggerEvent('redemrp:getPlayerFromId', _source, function(user)
 		local identifier = user.getIdentifier()
 		local charid = user.getSessionVar("charid")
 			--print(identifier)
