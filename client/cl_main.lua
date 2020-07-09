@@ -1,4 +1,3 @@
-
 local isSkinCreatorOpened = false
 local adding = true
 local adding2 = true
@@ -22,15 +21,13 @@ local size
 local faces
 local hair
 local beard
-local first_connect = 0
-local fast = false
 local overlay_ped = PlayerPedId()
 
 local textureId = -1
 local overlay_opacity = 1.0
 
 
- function toggleOverlayChange(name,visibility,tx_id,tx_normal,tx_material,tx_color_type,tx_opacity,tx_unk,palette_id,palette_color_primary,palette_color_secondary,palette_color_tertiary,var,opacity, targets)
+function toggleOverlayChange(name,visibility,tx_id,tx_normal,tx_material,tx_color_type,tx_opacity,tx_unk,palette_id,palette_color_primary,palette_color_secondary,palette_color_tertiary,var,opacity, targets)
     for k,v in pairs(overlay_all_layers) do
         if v.name==name then
             v.visibility = visibility
@@ -57,8 +54,8 @@ local overlay_opacity = 1.0
             end
         end
     end
-    is_overlay_change_active = true
-	overlay_ped = targets
+	 overlay_ped = targets
+    is_overlay_change_active = true  
 end
 
 
@@ -68,19 +65,6 @@ function modelrequest( model )
     end)
 end
 
-RegisterNetEvent('redemrp_skin:openCreator2')
-AddEventHandler('redemrp_skin:openCreator2', function()
-    local ped = PlayerPedId()
-    local pp = GetEntityCoords(ped)
-    Wait(6000)
-    SetEntityCoords(ped, pp.x, pp.y, pp.z)
-    SetEntityHeading(ped, 274.05)
-    FreezeEntityPosition(ped, true)
-    Wait(1000)
-    ShowSkinCreator(true)
-    isSkinCreatorOpened = true
-    camera(2.8,-0.15)
-end)
 
 RegisterNetEvent('redemrp_skin:openCreator')
 AddEventHandler('redemrp_skin:openCreator', function()
@@ -95,25 +79,12 @@ AddEventHandler('redemrp_skin:openCreator', function()
     isSkinCreatorOpened = true
     camera(2.8,-0.15)
 end)
+
 function ShowSkinCreator(enable)
     SetNuiFocus(enable, enable)
     SendNUIMessage({
         openSkinCreator = enable
     })
-end
-
-
-
-function GetPlayers()
-    local players = {}
-
-    for i = 0, 64 do
-        if NetworkIsPlayerActive(i) and i ~= PlayerId() then
-            table.insert(players, i)
-        end
-    end
-
-    return players
 end
 
 
@@ -139,7 +110,7 @@ Citizen.CreateThread(function()
         adding = false
     end
 end)
-
+TriggerEvent('redemrp_identity:removeLoadingScreen')
 Citizen.CreateThread(function()
     while adding2 do
         Citizen.Wait(0)
@@ -164,7 +135,6 @@ end)
 
 
 RegisterCommand("loadskin", function(source, args, rawCommand)
-    first_connect = 0
     TriggerServerEvent("redemrp_skin:loadSkin", function(cb)
         end)
 end)
@@ -172,7 +142,6 @@ end)
 
 RegisterNUICallback('saveSkin', function(data, cb)
     SetNuiFocus(false, false)
-
     local ped = PlayerPedId()
     FreezeEntityPosition(ped, false)
     DisplayHud(true)
@@ -189,91 +158,9 @@ RegisterNUICallback('saveSkin', function(data, cb)
     DestroyAllCams()
     isSkinCreatorOpened = false
     ShowSkinCreator(false)
-    local PlayerID = PlayerId()
-    local players = GetPlayers()
-    Wait(500)
-    for i=1, #players, 1 do
-
-        if players[i] ~= PlayerID  then
-            if GetPlayerPed(players[i]) ~= PlayerPedId() then
-                SetEntityVisible(GetPlayerPed(players[i]), true, true)
-                Wait(5)
-                SetEntityNoCollisionEntity(PlayerPedId(), GetPlayerPed(players[i]), true)
-                Wait(5)
-            end
-
-        end
-    end
 end)
 
 
-
-
-
-RegisterNetEvent('redemrp_skin:changeSex2')
-AddEventHandler('redemrp_skin:changeSex2', function(model, value)
-    local _model = model
-
-
-
-    Citizen.CreateThread(function()
-        local waiting = 0
-        while not HasModelLoaded( _model ) do
-            Wait(500)
-            modelrequest( _model )
-        end
-        Citizen.InvokeNative(0xED40380076A31506, PlayerId(), _model)
-        Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
-        SetModelAsNoLongerNeeded(_model)
-        if value == 1 then
-            SetEntityAlpha(PlayerPedId(), 0)
-        end
-        print("works")
-
-    end)
-
-end)
-
-
-
-RegisterNetEvent('redemrp_skin:defaultFClothes')
-AddEventHandler('redemrp_skin:defaultFClothes', function()
-    Citizen.Wait(500)
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x10F5497A,true,true,true) -- PANTS
-    Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x14511493,true,true,true) -- COAT
-end)
-
-
-
-function loadfeatures(value, feature ,target)
-    local ped = target
-    Citizen.InvokeNative(0x5653AB26C82938CF, ped, feature, value)
-    Citizen.InvokeNative(0xCC8CA3E88256E58F, ped, false, true, true, true, false)
-end
-
-
-RegisterCommand("creator", function(source, args)
-    ShowSkinCreator(true)
-end)
-
-
-RegisterNetEvent('redemrp_skin:FastLoad')
-AddEventHandler('redemrp_skin:FastLoad', function()
-    fast = true
-    first_connect = 0
-    TriggerServerEvent("redemrp_skin:loadSkin", function(cb)
-        end)
-end)
-
-
-function modelrequest( model )
-    Citizen.CreateThread(function()
-        RequestModel( model )
-    end)
-end
-RegisterCommand("st", function(source, args, rawCommand)
-    texture_types["female"].albedo = GetHashKey(tostring(args[1]))
-end)
 RegisterNetEvent('redemrp_skin:applySkin')
 AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
     Citizen.CreateThread(function()
@@ -282,17 +169,17 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
         local _t = target
         local test = false
         local data = _data
+        local model = "mp_male"
+        local player = PlayerId()
+
         if target == nil then
-            local model = "mp_male"
-            local player = PlayerId()
             if tonumber(data.sex) == 1 then
                 model = "mp_male"
             elseif tonumber(data.sex) == 2 then
                 model = "mp_female"
             end
+
             local model2 = GetHashKey(model)
-            --print(player)
-            local waiting = 0
             while not HasModelLoaded( model2 ) do
                 Wait(500)
                 modelrequest( model2 )
@@ -302,6 +189,7 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
             SetEntityAlpha(PlayerPedId(), 0)
             print("works")
         end
+
         if _t ~= nil then
             _target = _t
             SetEntityAlpha(_target, 0)
@@ -309,6 +197,8 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
         else
             _target = PlayerPedId()
         end
+
+
         while test == false do
             Wait(2000)
             local torso = '0x' .. maletorsos[1]
@@ -320,32 +210,32 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                     torso = '0x' .. maletorsos[1]
                     legs = '0x' .. malelegs[1]
                     head = '0x' .. maleheads[1]
-					texture_types["male"].albedo = GetHashKey("mp_head_mr1_sc08_c0_000_ab")
+                    texture_types["male"].albedo = GetHashKey("mp_head_mr1_sc08_c0_000_ab")
                 elseif tonumber(data.skincolor) == 2 then
                     torso = '0x' .. maletorsos[10]
                     legs = '0x' .. malelegs[10]
                     head = '0x' .. maleheads[10]
-					texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc03_c0_000_ab")
+                    texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc03_c0_000_ab")
                 elseif tonumber(data.skincolor) == 3 then
                     torso = '0x' .. maletorsos[3]
                     legs = '0x' .. malelegs[3]
                     head = '0x' .. maleheads[3]
-					texture_types["male"].albedo = GetHashKey("head_mr1_sc02_rough_c0_002_ab")
+                    texture_types["male"].albedo = GetHashKey("head_mr1_sc02_rough_c0_002_ab")
                 elseif tonumber(data.skincolor) == 4 then
                     torso = '0x' .. maletorsos[11]
                     legs = '0x' .. malelegs[11]
                     head = '0x' .. maleheads[11]
-					texture_types["male"].albedo = GetHashKey("head_mr1_sc04_rough_c0_002_ab")
+                    texture_types["male"].albedo = GetHashKey("head_mr1_sc04_rough_c0_002_ab")
                 elseif tonumber(data.skincolor) == 5 then
                     torso = '0x' .. maletorsos[8]
                     legs = '0x' .. malelegs[8]
                     head = '0x' .. maleheads[8]
-					texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc01_c0_000_ab")
+                    texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc01_c0_000_ab")
                 elseif tonumber(data.skincolor) == 6 then
                     torso = '0x' .. maletorsos[30]
                     legs = '0x' .. malelegs[30]
                     head = '0x' .. maleheads[30]
-					texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc05_c0_000_ab")
+                    texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc05_c0_000_ab")
                 else end
 
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(torso), false, true, true)
@@ -362,42 +252,38 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                     torso2 = '0x' .. femaletorsos[1]
                     legs2 = '0x' .. femalelegs[1]
                     head2 = '0x' .. femaleheads[1]
-					texture_types["female"].albedo = GetHashKey("mp_head_fr1_sc08_c0_000_ab")
+                    texture_types["female"].albedo = GetHashKey("mp_head_fr1_sc08_c0_000_ab")
                 elseif tonumber(data.skincolor) == 2 then
                     torso2 = '0x' .. femaletorsos[10]
                     legs2 = '0x' .. femalelegs[10]
                     head2 = '0x' .. femaleheads[10]
-					texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc03_c0_000_ab")
+                    texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc03_c0_000_ab")
                 elseif tonumber(data.skincolor) == 3 then
                     torso2 = '0x' .. femaletorsos[3]
                     legs2 = '0x' .. femalelegs[3]
                     head2 = '0x' .. femaleheads[3]
-					texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc03_c0_000_ab")
+                    texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc03_c0_000_ab")
                 elseif tonumber(data.skincolor) == 4 then
                     torso2 = '0x' .. femaletorsos[11]
                     legs2 = '0x' .. femalelegs[11]
                     head2 = '0x' .. femaleheads[11]
-					texture_types["female"].albedo = GetHashKey("head_fr1_sc04_rough_c0_002_ab")
+                    texture_types["female"].albedo = GetHashKey("head_fr1_sc04_rough_c0_002_ab")
                 elseif tonumber(data.skincolor) == 5 then
                     torso2 = '0x' .. femaletorsos[8]
                     legs2 = '0x' .. femalelegs[8]
                     head2 = '0x' .. femaleheads[8]
-					texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc01_c0_000_ab")
+                    texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc01_c0_000_ab")
                 elseif tonumber(data.skincolor) == 6 then
                     torso2 = '0x' .. femaletorsos[30]
                     legs2 = '0x' .. femalelegs[30]
                     head2 = '0x' .. femaleheads[30]
-					texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc05_c0_000_ab")
+                    texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc05_c0_000_ab")
                 else end
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(torso2), false, true, true)
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(legs2), false, true, true)
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(head2), false, true, true)
 
             end
-			Citizen.InvokeNative(0x704C908E9C405136, _target)
-			Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
-			Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
-
 
             local twarz = '0x' .. maleheads[tonumber(data.face)]
             local twarz2 = '0x' .. femaleheads[tonumber(data.face)]
@@ -411,6 +297,7 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(twarz2), false, true, true)
             end
 
+
             if tonumber(data.hair) > 1 then
                 if tonumber(data.sex) == 1 then
                     local wlosy = '0x' .. malehairs[tonumber(data.hair)]
@@ -421,11 +308,6 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                     Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(wlosy2), false, true, true)
                 end
             end
-			Citizen.InvokeNative(0x704C908E9C405136, _target)
-			Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
-			Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
-
-
 
 
 
@@ -436,17 +318,12 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
 
                 end
             end
-			
-			Citizen.InvokeNative(0x704C908E9C405136, _target)
-			Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
-			Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
-			
+
+
             if tonumber(data.eyecolor) == 5 then
                 data.eyecolor = 2
             end
-			Citizen.InvokeNative(0x704C908E9C405136, _target)
-			Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
-			Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
+
 
 
             if tonumber(data.sex) == 1 then
@@ -456,11 +333,6 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                 local oczy2 = '0x' .. femaleeyes[tonumber(data.eyecolor)]
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(oczy2), false, true, true)
             end
-			Citizen.InvokeNative(0x704C908E9C405136, _target)
-			Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
-			Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
-
-
 
 
             local BODY_TYPES = {
@@ -471,18 +343,10 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                 61606861,
             }
             if tonumber(data.sex) == 1 then
-                --Citizen.InvokeNative(0xA5BAE410B03E7371 ,_target,math.floor(data.bodysize+123),true,true)
                 Citizen.InvokeNative(0x1902C4CFCC5BE57C, _target, BODY_TYPES[tonumber(data.bodysize)]);
             else
                 Citizen.InvokeNative(0x1902C4CFCC5BE57C, _target, BODY_TYPES[tonumber(data.bodysize)]);
             end
-			Citizen.InvokeNative(0x704C908E9C405136, _target)
-			Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
-			Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
-
-
-
-
 
 
             local feature
@@ -539,65 +403,55 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                 if feature == tonumber(0x3471) and value == 0.0 then
                     value = 0.01
                     print("wartosc zmieniona zeby dzialalo wczesniej 0.0 teraz 0.01")
-					print(_target)
+                    print(_target)
                 end
                 Citizen.InvokeNative(0x5653AB26C82938CF, _target, feature, value)
             end
-			Citizen.InvokeNative(0x704C908E9C405136, _target)
-			Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
-			Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
 			
-		if 	tonumber(data.eyebrows_t)  ~= nil then
-				local visibility = 0
-		if tonumber(data.eyebrows_t) > 0 then
-			visibility = 1
-		end
-        toggleOverlayChange("eyebrows",visibility,tonumber(data.eyebrows_t),0,0,0,1.0,0,tonumber(data.eyebrows_id),tonumber(data.eyebrows_c1),tonumber(data.eyebrows_c2),tonumber(data.eyebrows_c3),tonumber(0), tonumber(data.eyebrows_op/100) , _target)
-		visibility = 0
-		if tonumber(data.scars_t) >0 then
-			visibility = 1
-		end		
-		toggleOverlayChange("scars",visibility,tonumber(data.scars_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.scars_op/100), _target)
-   visibility = 0
-		if tonumber(data.ageing_t) >0 then
-			visibility = 1
-		end		
-		toggleOverlayChange("ageing",visibility,tonumber(data.ageing_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.ageing_op/100), _target)
-		
-		visibility = 0
-		if tonumber(data.freckles_t) >0 then
-			visibility = 1
-		end		
-		toggleOverlayChange("freckles",visibility,tonumber(data.freckles_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.freckles_op/100), _target)
-		
-		visibility = 0
-		if tonumber(data.moles_t) >0 then
-			visibility = 1
-		end		
-		toggleOverlayChange("moles",visibility,tonumber(data.moles_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.moles_op/100), _target)
-		
-		visibility = 0
-		if tonumber(data.spots_t) >0 then
-			visibility = 1
-		end		
-		toggleOverlayChange("spots",visibility,tonumber(data.spots_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.spots_op/100), _target)
-   
-	 
-end
+			Citizen.InvokeNative(0x704C908E9C405136, _target)
+            Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
+			
+            if 	tonumber(data.eyebrows_t)  ~= nil then
+                local visibility = 0
+                toggleOverlayChange("eyebrows",1,tonumber(data.eyebrows_t),0,0,0,1.0,0,tonumber(data.eyebrows_id),tonumber(data.eyebrows_c1),tonumber(data.eyebrows_c2),tonumber(data.eyebrows_c3),tonumber(0), tonumber(data.eyebrows_op/100) , _target)
+                visibility = 0
+                if tonumber(data.scars_t) >0 then
+                    visibility = 1
+                end
+                toggleOverlayChange("scars",visibility,tonumber(data.scars_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.scars_op/100), _target)
+                visibility = 0
+                if tonumber(data.ageing_t) >0 then
+                    visibility = 1
+                end
+                toggleOverlayChange("ageing",visibility,tonumber(data.ageing_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.ageing_op/100), _target)
+
+                visibility = 0
+                if tonumber(data.freckles_t) >0 then
+                    visibility = 1
+                end
+                toggleOverlayChange("freckles",visibility,tonumber(data.freckles_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.freckles_op/100), _target)
+
+                visibility = 0
+                if tonumber(data.moles_t) >0 then
+                    visibility = 1
+                end
+                toggleOverlayChange("moles",visibility,tonumber(data.moles_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.moles_op/100), _target)
+
+                visibility = 0
+                if tonumber(data.spots_t) >0 then
+                    visibility = 1
+                end
+                toggleOverlayChange("spots",visibility,tonumber(data.spots_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.spots_op/100), _target)
 
 
-			Wait(500)
-
-      		Citizen.InvokeNative(0x704C908E9C405136, _target)
-			Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
-			Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
-            Wait(500)
-
-            test = Citizen.InvokeNative(0xFD1BA1EEF7985BB8, _target, 0x3471)
-            if test == false then
-                print("Chuj nieudane...")
-                Wait(1000)
             end
+
+            Citizen.InvokeNative(0x704C908E9C405136, _target)
+            Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
+            Wait(500)
+            test = Citizen.InvokeNative(0xA0BC8FAED8CFEB3C, _target)
 
         end
         if _t == nil then
@@ -606,25 +460,14 @@ end
                 end)
         else
             Wait(500)
-			print("TEST 222")
             TriggerEvent("redemrp_clothing:load", data, _clothes, _target)
         end
-        TriggerServerEvent('redemrp_respawn:TestStatus')
-
-        --TriggerEvent("initializeVoip")
     end)
 end)
 
 RegisterNUICallback('updateBody', function(data, cb)
     TriggerEvent("redemrp_skin:updateBody" , data)
 end)
-
-
-
-
-
-
-
 
 RegisterNetEvent('redemrp_skin:updateBody')
 AddEventHandler('redemrp_skin:updateBody', function(data)
@@ -641,102 +484,106 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
             sex = 2
         end
         local model2 = GetHashKey(model)
-        --print(player)
-        TriggerEvent("redemrp_skin:changeSex2", model2)
+        while not HasModelLoaded( model2 ) do
+            Wait(500)
+            modelrequest( model2 )
+        end
+        Citizen.InvokeNative(0xED40380076A31506, PlayerId(), model2)
+        Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
         if sex == 2 then
-            TriggerEvent("redemrp_skin:defaultFClothes")
-        else end
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x10F5497A,false,true,true) -- PANTS
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x14511493,false,true,true) -- COAT
+        end
     end
 
 
-    
     if skin ~= data.skincolor then
         skin = data.skincolor
         camera(2.8,-0.15)
-		local torso = '0x' .. maletorsos[1]
-		local legs = '0x' .. malelegs[1]
-		local head = '0x' .. maleheads[1]
-            if tonumber(data.sex) == 1 then
-                print("test skory")
-                if tonumber(data.skincolor) == 1 then
-                    torso = '0x' .. maletorsos[1]
-                    legs = '0x' .. malelegs[1]
-                    head = '0x' .. maleheads[1]
-					texture_types["male"].albedo = GetHashKey("mp_head_mr1_sc08_c0_000_ab")
-                elseif tonumber(data.skincolor) == 2 then
-                    torso = '0x' .. maletorsos[10]
-                    legs = '0x' .. malelegs[10]
-                    head = '0x' .. maleheads[10]
-					texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc03_c0_000_ab")
-                elseif tonumber(data.skincolor) == 3 then
-                    torso = '0x' .. maletorsos[3]
-                    legs = '0x' .. malelegs[3]
-                    head = '0x' .. maleheads[3]
-					texture_types["male"].albedo = GetHashKey("head_mr1_sc02_rough_c0_002_ab")
-                elseif tonumber(data.skincolor) == 4 then
-                    torso = '0x' .. maletorsos[11]
-                    legs = '0x' .. malelegs[11]
-                    head = '0x' .. maleheads[11]
-					texture_types["male"].albedo = GetHashKey("head_mr1_sc04_rough_c0_002_ab")
-                elseif tonumber(data.skincolor) == 5 then
-                    torso = '0x' .. maletorsos[8]
-                    legs = '0x' .. malelegs[8]
-                    head = '0x' .. maleheads[8]
-					texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc01_c0_000_ab")
-                elseif tonumber(data.skincolor) == 6 then
-                    torso = '0x' .. maletorsos[30]
-                    legs = '0x' .. malelegs[30]
-                    head = '0x' .. maleheads[30]
-					texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc05_c0_000_ab")
-                else end
+        local torso = '0x' .. maletorsos[1]
+        local legs = '0x' .. malelegs[1]
+        local head = '0x' .. maleheads[1]
+		texture_types["male"].albedo = GetHashKey("mp_head_mr1_sc08_c0_000_ab")
+        if tonumber(data.sex) == 1 then
+            print("test skory")
+            if tonumber(data.skincolor) == 1 then
+                torso = '0x' .. maletorsos[1]
+                legs = '0x' .. malelegs[1]
+                head = '0x' .. maleheads[1]
+                texture_types["male"].albedo = GetHashKey("mp_head_mr1_sc08_c0_000_ab")
+            elseif tonumber(data.skincolor) == 2 then
+                torso = '0x' .. maletorsos[10]
+                legs = '0x' .. malelegs[10]
+                head = '0x' .. maleheads[10]
+                texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc03_c0_000_ab")
+            elseif tonumber(data.skincolor) == 3 then
+                torso = '0x' .. maletorsos[3]
+                legs = '0x' .. malelegs[3]
+                head = '0x' .. maleheads[3]
+                texture_types["male"].albedo = GetHashKey("head_mr1_sc02_rough_c0_002_ab")
+            elseif tonumber(data.skincolor) == 4 then
+                torso = '0x' .. maletorsos[11]
+                legs = '0x' .. malelegs[11]
+                head = '0x' .. maleheads[11]
+                texture_types["male"].albedo = GetHashKey("head_mr1_sc04_rough_c0_002_ab")
+            elseif tonumber(data.skincolor) == 5 then
+                torso = '0x' .. maletorsos[8]
+                legs = '0x' .. malelegs[8]
+                head = '0x' .. maleheads[8]
+                texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc01_c0_000_ab")
+            elseif tonumber(data.skincolor) == 6 then
+                torso = '0x' .. maletorsos[30]
+                legs = '0x' .. malelegs[30]
+                head = '0x' .. maleheads[30]
+                texture_types["male"].albedo = GetHashKey("MP_head_mr1_sc05_c0_000_ab")
+            else end
 
-                Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber(torso), true, true, true)
-                Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber(legs), true, true, true)
-                Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber(head), true, true, true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber(torso), false, true, true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber(legs), false, true, true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber(head), false, true, true)
 
 
-            else
+        else
 
-                local torso2 = '0x' .. femaletorsos[1]
-                local legs2 = '0x' .. femalelegs[1]
-                local head2 = '0x' .. femalelegs[1]
-                if tonumber(data.skincolor) == 1 then
-                    torso2 = '0x' .. femaletorsos[1]
-                    legs2 = '0x' .. femalelegs[1]
-                    head2 = '0x' .. femaleheads[1]
-					texture_types["female"].albedo = GetHashKey("mp_head_fr1_sc08_c0_000_ab")
-                elseif tonumber(data.skincolor) == 2 then
-                    torso2 = '0x' .. femaletorsos[10]
-                    legs2 = '0x' .. femalelegs[10]
-                    head2 = '0x' .. femaleheads[10]
-					texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc03_c0_000_ab")
-                elseif tonumber(data.skincolor) == 3 then
-                    torso2 = '0x' .. femaletorsos[3]
-                    legs2 = '0x' .. femalelegs[3]
-                    head2 = '0x' .. femaleheads[3]
-					texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc03_c0_000_ab")
-                elseif tonumber(data.skincolor) == 4 then
-                    torso2 = '0x' .. femaletorsos[11]
-                    legs2 = '0x' .. femalelegs[11]
-                    head2 = '0x' .. femaleheads[11]
-					texture_types["female"].albedo = GetHashKey("head_fr1_sc02_rough_c0_002_ab")
-                elseif tonumber(data.skincolor) == 5 then
-                    torso2 = '0x' .. femaletorsos[8]
-                    legs2 = '0x' .. femalelegs[8]
-                    head2 = '0x' .. femaleheads[8]
-					texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc01_c0_000_ab")
-                elseif tonumber(data.skincolor) == 6 then
-                    torso2 = '0x' .. femaletorsos[30]
-                    legs2 = '0x' .. femalelegs[30]
-                    head2 = '0x' .. femaleheads[30]
-					texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc05_c0_000_ab")
-                else end
-                
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(torso2),true,true,true)
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(legs2),true,true,true)
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(head2),true,true,true)
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x10F5497A,true,true,true) -- PANTS
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x14511493,true,true,true) -- COAT
+            local torso2 = '0x' .. femaletorsos[1]
+            local legs2 = '0x' .. femalelegs[1]
+            local head2 = '0x' .. femalelegs[1]
+			texture_types["female"].albedo = GetHashKey("mp_head_fr1_sc08_c0_000_ab")
+            if tonumber(data.skincolor) == 1 then
+                torso2 = '0x' .. femaletorsos[1]
+                legs2 = '0x' .. femalelegs[1]
+                head2 = '0x' .. femaleheads[1]
+                texture_types["female"].albedo = GetHashKey("mp_head_fr1_sc08_c0_000_ab")
+            elseif tonumber(data.skincolor) == 2 then
+                torso2 = '0x' .. femaletorsos[10]
+                legs2 = '0x' .. femalelegs[10]
+                head2 = '0x' .. femaleheads[10]
+                texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc03_c0_000_ab")
+            elseif tonumber(data.skincolor) == 3 then
+                torso2 = '0x' .. femaletorsos[3]
+                legs2 = '0x' .. femalelegs[3]
+                head2 = '0x' .. femaleheads[3]
+                texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc03_c0_000_ab")
+            elseif tonumber(data.skincolor) == 4 then
+                torso2 = '0x' .. femaletorsos[11]
+                legs2 = '0x' .. femalelegs[11]
+                head2 = '0x' .. femaleheads[11]
+                texture_types["female"].albedo = GetHashKey("head_fr1_sc02_rough_c0_002_ab")
+            elseif tonumber(data.skincolor) == 5 then
+                torso2 = '0x' .. femaletorsos[8]
+                legs2 = '0x' .. femalelegs[8]
+                head2 = '0x' .. femaleheads[8]
+                texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc01_c0_000_ab")
+            elseif tonumber(data.skincolor) == 6 then
+                torso2 = '0x' .. femaletorsos[30]
+                legs2 = '0x' .. femalelegs[30]
+                head2 = '0x' .. femaleheads[30]
+                texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc05_c0_000_ab")
+            else end
+
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(torso2),false,true,true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(legs2),false,true,true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(head2),false,true,true)
         end
     end
     if eye ~= data.eyecolor then
@@ -744,10 +591,10 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
         camera(0.9,0.6)
         if sex == 1 then
             local oczy = '0x' .. maleeyes[tonumber(eye)]
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(oczy),true,true,true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(oczy),false,true,true)
         else
             local oczy2 = '0x' .. femaleeyes[tonumber(eye)]
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(oczy2),true,true,true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(oczy2),false,true,true)
         end
     end
 
@@ -758,10 +605,10 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
         local twarz2 = '0x' .. femaleheads[tonumber(face)]
         if sex == 1 then
             --print (face)
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(twarz),true,true,true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(twarz),false,true,true)
         else
             --print (face)
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(twarz2),true,true,true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(twarz2),false,true,true)
         end
     end
     if size ~= data.bodysize then
@@ -786,10 +633,10 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
         if tonumber(hair) > 1 then
             if sex == 1 then
                 local wlosy = '0x' .. malehairs[tonumber(hair)]
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(wlosy),true,true,true)
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(wlosy),false,true,true)
             else
                 local wlosy2 = '0x' .. femalehairs[tonumber(hair)]
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(wlosy2),true,true,true)
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(wlosy2),false,true,true)
             end
         else
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x864B03AE, 0) -- Set target category, here the hash is for hats
@@ -802,7 +649,7 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
         if tonumber(beard) > 1 then
             if sex == 1 then
                 local broda = '0x' .. mustache[tonumber(beard)]
-                Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(broda),true,true,true)
+                Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),tonumber(broda),false,true,true)
             end
         else
             Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0xF8016BCA, 0) -- Set target category, here the hash is for hats
@@ -811,7 +658,6 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
     end
 
 
-    local ped = PlayerPedId()
     local feature
     local features = {
         0x84D6,0x3303,0x2FF9,0x4AD1 ,0xC04F,0xB6CE,0x2844,0xED30,0x6A0B,0xABCF,0x358D,
@@ -863,43 +709,48 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
     for k,v in pairs(name) do
         feature = features[k]
         local value = data[v]/100
-        loadfeatures(value, feature, ped)
+        Citizen.InvokeNative(0x5653AB26C82938CF, PlayerPedId(), feature, value)
     end
 
-		local visibility = 0
-		if tonumber(data.eyebrows_t) > 0 then
-			visibility = 1
-		end
-        toggleOverlayChange("eyebrows",visibility,tonumber(data.eyebrows_t),0,0,0,1.0,0,tonumber(data.eyebrows_id),0,0,0,tonumber(0), tonumber(data.eyebrows_op/100) , PlayerPedId())
-		visibility = 0
-		if tonumber(data.scars_t) >0 then
-			visibility = 1
-		end		
-		toggleOverlayChange("scars",visibility,tonumber(data.scars_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.scars_op/100), PlayerPedId())
-		visibility = 0
-		if tonumber(data.ageing_t) >0 then
-			visibility = 1
-		end		
-		toggleOverlayChange("ageing",visibility,tonumber(data.ageing_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.ageing_op/100), PlayerPedId())
-		visibility = 0
-		if tonumber(data.freckles_t) >0 then
-			visibility = 1
-		end		
-		toggleOverlayChange("freckles",visibility,tonumber(data.freckles_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.freckles_op/100), PlayerPedId())
-		
-		visibility = 0
-		if tonumber(data.moles_t) >0 then
-			visibility = 1
-		end		
-		toggleOverlayChange("moles",visibility,tonumber(data.moles_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.moles_op/100), PlayerPedId())
-		
-		visibility = 0
-		if tonumber(data.spots_t) >0 then
-			visibility = 1
-		end		
-		toggleOverlayChange("spots",visibility,tonumber(data.spots_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.spots_op/100), PlayerPedId())
-   
-	 
+    Citizen.InvokeNative(0x704C908E9C405136, PlayerPedId())
+    Citizen.InvokeNative(0xAAB86462966168CE, PlayerPedId(), 1)
+    Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0)
+
+
+    local visibility = 0
+    if tonumber(data.eyebrows_t) > 0 then
+        visibility = 1
+    end
+    toggleOverlayChange("eyebrows",visibility,tonumber(data.eyebrows_t),0,0,0,1.0,0,tonumber(data.eyebrows_id),0,0,0,tonumber(0), tonumber(data.eyebrows_op/100) , PlayerPedId())
+    visibility = 0
+    if tonumber(data.scars_t) >0 then
+        visibility = 1
+    end
+    toggleOverlayChange("scars",visibility,tonumber(data.scars_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.scars_op/100), PlayerPedId())
+    visibility = 0
+    if tonumber(data.ageing_t) >0 then
+        visibility = 1
+    end
+    toggleOverlayChange("ageing",visibility,tonumber(data.ageing_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.ageing_op/100), PlayerPedId())
+    visibility = 0
+    if tonumber(data.freckles_t) >0 then
+        visibility = 1
+    end
+    toggleOverlayChange("freckles",visibility,tonumber(data.freckles_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.freckles_op/100), PlayerPedId())
+
+    visibility = 0
+    if tonumber(data.moles_t) >0 then
+        visibility = 1
+    end
+    toggleOverlayChange("moles",visibility,tonumber(data.moles_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.moles_op/100), PlayerPedId())
+
+    visibility = 0
+    if tonumber(data.spots_t) >0 then
+        visibility = 1
+    end
+    toggleOverlayChange("spots",visibility,tonumber(data.spots_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.spots_op/100), PlayerPedId())
+
+
 end)
 
 
