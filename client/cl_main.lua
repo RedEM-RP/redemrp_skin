@@ -110,7 +110,7 @@ Citizen.CreateThread(function()
         adding = false
     end
 end)
-TriggerEvent('redemrp_identity:removeLoadingScreen')
+
 Citizen.CreateThread(function()
     while adding2 do
         Citizen.Wait(0)
@@ -187,13 +187,11 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
             Citizen.InvokeNative(0xED40380076A31506, PlayerId(), model2)
             Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
             SetEntityAlpha(PlayerPedId(), 0)
-            print("works")
         end
 
         if _t ~= nil then
             _target = _t
             SetEntityAlpha(_target, 0)
-            print("test")
         else
             _target = PlayerPedId()
         end
@@ -205,7 +203,6 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
             local legs = '0x' .. malelegs[1]
             local head = '0x' .. maleheads[1]
             if tonumber(data.sex) == 1 then
-                print("poszlo")
                 if tonumber(data.skincolor) == 1 then
                     torso = '0x' .. maletorsos[1]
                     legs = '0x' .. malelegs[1]
@@ -288,12 +285,10 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
             local twarz = '0x' .. maleheads[tonumber(data.face)]
             local twarz2 = '0x' .. femaleheads[tonumber(data.face)]
             if tonumber(data.sex) == 1 then
-                --print (face)
 
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(twarz), false, true, true)
 
             else
-                --print (face)
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(twarz2), false, true, true)
             end
 
@@ -400,11 +395,6 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
             for k,v in pairs(name) do
                 feature = features[k]
                 local value = data[v]/100
-                if feature == tonumber(0x3471) and value == 0.0 then
-                    value = 0.01
-                    print("wartosc zmieniona zeby dzialalo wczesniej 0.0 teraz 0.01")
-                    print(_target)
-                end
                 Citizen.InvokeNative(0x5653AB26C82938CF, _target, feature, value)
             end
 			
