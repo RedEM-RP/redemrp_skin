@@ -196,7 +196,10 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
             _target = PlayerPedId()
         end
 
-
+	Citizen.InvokeNative(0xD710A5007C2AC539, _target, 0x1D4C528A, 0)
+	Citizen.InvokeNative(0x704C908E9C405136, _target)
+	Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
+	Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) 
         while test == false do
             Wait(2000)
             local torso = '0x' .. maletorsos[1]
