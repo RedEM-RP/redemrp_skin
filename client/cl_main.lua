@@ -27,7 +27,24 @@ local textureId = -1
 local overlay_opacity = 1.0
 
 
-function toggleOverlayChange(name,visibility,tx_id,tx_normal,tx_material,tx_color_type,tx_opacity,tx_unk,palette_id,palette_color_primary,palette_color_secondary,palette_color_tertiary,var,opacity, targets)
+function toggleOverlayChange(_name,_visibility,_tx_id,_tx_normal,_tx_material,_tx_color_type,_tx_opacity,_tx_unk,_palette_id,_palette_color_primary,_palette_color_secondary,_palette_color_tertiary,_var,_opacity, _targets)
+Citizen.CreateThread(function()
+local name = _name
+local visibility = _visibility
+local tx_id = _tx_id
+local tx_normal = _tx_normal
+local tx_material = _tx_material
+local tx_color_type = _tx_color_type
+local tx_opacity = _tx_opacity
+local tx_unk = _tx_unk
+local palette_id = _palette_id
+local palette_color_primary = _palette_color_primary
+local palette_color_secondary = _palette_color_secondary
+local palette_color_tertiary = _palette_color_tertiary
+local var = _var
+local opacity = _opacity
+local target = _targets
+
     for k,v in pairs(overlay_all_layers) do
         if v.name==name then
             v.visibility = visibility
@@ -54,8 +71,35 @@ function toggleOverlayChange(name,visibility,tx_id,tx_normal,tx_material,tx_colo
             end
         end
     end
-	 overlay_ped = targets
-    is_overlay_change_active = true  
+		local ped = target
+            if IsPedMale(ped) then
+                current_texture_settings = texture_types["male"]
+            else
+                current_texture_settings = texture_types["female"]
+            end          
+            if textureId ~= -1 then
+                Citizen.InvokeNative(0xB63B9178D0F58D82,textureId)  -- reset texture
+                Citizen.InvokeNative(0x6BEFAA907B076859,textureId)  -- remove texture
+            end
+            textureId = Citizen.InvokeNative(0xC5E7204F322E49EB,current_texture_settings.albedo, current_texture_settings.normal, current_texture_settings.material);  -- create texture
+            for k,v in pairs(overlay_all_layers) do
+                if v.visibility ~= 0 then
+                    local overlay_id = Citizen.InvokeNative(0x86BB5FF45F193A02,textureId, v.tx_id , v.tx_normal, v.tx_material, v.tx_color_type, v.tx_opacity,v.tx_unk); -- create overlay
+                    if v.tx_color_type == 0 then
+                        Citizen.InvokeNative(0x1ED8588524AC9BE1,textureId,overlay_id,v.palette);    -- apply palette
+                        Citizen.InvokeNative(0x2DF59FFE6FFD6044,textureId,overlay_id,v.palette_color_primary,v.palette_color_secondary,v.palette_color_tertiary)  -- apply palette colours
+                    end
+                    Citizen.InvokeNative(0x3329AAE2882FC8E4,textureId,overlay_id, v.var);  -- apply overlay variant
+                    Citizen.InvokeNative(0x6C76BC24F8BB709A,textureId,overlay_id, v.opacity); -- apply overlay opacity
+                end
+            end
+            while not Citizen.InvokeNative(0x31DC8D3F216D8509,textureId) do  -- wait till texture fully loaded
+                Citizen.Wait(0)
+            end
+            Citizen.InvokeNative(0x0B46E25761519058,ped,`heads`,textureId)  -- apply texture to current component in category "heads"
+            Citizen.InvokeNative(0x92DAABA2C1C10B0E,textureId)      -- update texture
+            Citizen.InvokeNative(0xCC8CA3E88256E58F,ped, 0, 1, 1, 1, false);  -- refresh ped components
+	end)
 end
 
 
@@ -185,7 +229,10 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                 modelrequest( model2 )
             end
             Citizen.InvokeNative(0xED40380076A31506, PlayerId(), model2)
-            Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
+            Citizen.InvokeNative(0x77FF8D35EEC6BBC4,PlayerPedId(),0,0) -- SetPedOutfitPreset
+            while not Citizen.InvokeNative(0xA0BC8FAED8CFEB3C,PlayerPedId()) do  -- wait till outfit fully loaded
+                Citizen.Wait(0)
+            end
             SetEntityAlpha(PlayerPedId(), 0)
         end
 
@@ -196,12 +243,17 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
             _target = PlayerPedId()
         end
 
-	Citizen.InvokeNative(0xD710A5007C2AC539, _target, 0x1D4C528A, 0)
-	Citizen.InvokeNative(0x704C908E9C405136, _target)
-	Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
-	Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) 
+
         while test == false do
-            Wait(2000)
+            print("Loading...")
+            Citizen.InvokeNative(0x77FF8D35EEC6BBC4,PlayerPedId(),0,0) -- SetPedOutfitPreset
+            while not Citizen.InvokeNative(0xA0BC8FAED8CFEB3C,PlayerPedId()) do  -- wait till outfit fully loaded
+                Citizen.Wait(0)
+            end
+            Citizen.InvokeNative(0x0BFA1BD465CDFEFD, _target)
+            Citizen.InvokeNative(0xD710A5007C2AC539, _target, 0x1D4C528A, 0)
+            Citizen.InvokeNative(0x704C908E9C405136, _target)
+            Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0)
             local torso = '0x' .. maletorsos[1]
             local legs = '0x' .. malelegs[1]
             local head = '0x' .. maleheads[1]
@@ -239,9 +291,11 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                 else end
 
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(torso), false, true, true)
+                Wait(10)
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(legs), false, true, true)
+                Wait(10)
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(head), false, true, true)
-
+                Wait(10)
 
             else
 
@@ -280,9 +334,11 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                     texture_types["female"].albedo = GetHashKey("MP_head_fr1_sc05_c0_000_ab")
                 else end
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(torso2), false, true, true)
+                Wait(10)
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(legs2), false, true, true)
+                Wait(10)
                 Citizen.InvokeNative(0xD3A7B003ED343FD9 , _target,   tonumber(head2), false, true, true)
-
+                Wait(10)
             end
 
             local twarz = '0x' .. maleheads[tonumber(data.face)]
@@ -396,15 +452,15 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
             }
 
             for k,v in pairs(name) do
+                Wait(2)
                 feature = features[k]
                 local value = data[v]/100
                 Citizen.InvokeNative(0x5653AB26C82938CF, _target, feature, value)
             end
-			
-			Citizen.InvokeNative(0x704C908E9C405136, _target)
-            Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
+
+            Citizen.InvokeNative(0x704C908E9C405136, _target)
             Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
-			
+
             if 	tonumber(data.eyebrows_t)  ~= nil then
                 local visibility = 0
                 toggleOverlayChange("eyebrows",1,tonumber(data.eyebrows_t),0,0,0,1.0,0,tonumber(data.eyebrows_id),tonumber(data.eyebrows_c1),tonumber(data.eyebrows_c2),tonumber(data.eyebrows_c3),tonumber(0), tonumber(data.eyebrows_op/100) , _target)
@@ -412,39 +468,43 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
                 if tonumber(data.scars_t) >0 then
                     visibility = 1
                 end
+                Wait(50)
                 toggleOverlayChange("scars",visibility,tonumber(data.scars_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.scars_op/100), _target)
                 visibility = 0
                 if tonumber(data.ageing_t) >0 then
                     visibility = 1
                 end
+                Wait(50)
                 toggleOverlayChange("ageing",visibility,tonumber(data.ageing_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.ageing_op/100), _target)
 
                 visibility = 0
                 if tonumber(data.freckles_t) >0 then
                     visibility = 1
                 end
+                Wait(50)
                 toggleOverlayChange("freckles",visibility,tonumber(data.freckles_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.freckles_op/100), _target)
 
                 visibility = 0
                 if tonumber(data.moles_t) >0 then
                     visibility = 1
                 end
+                Wait(50)
                 toggleOverlayChange("moles",visibility,tonumber(data.moles_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.moles_op/100), _target)
 
                 visibility = 0
                 if tonumber(data.spots_t) >0 then
                     visibility = 1
                 end
+                Wait(50)
                 toggleOverlayChange("spots",visibility,tonumber(data.spots_t),0,0,1,1.0,0,tonumber(0),0,0,0,tonumber(0), tonumber(data.spots_op/100), _target)
 
 
             end
 
             Citizen.InvokeNative(0x704C908E9C405136, _target)
-            Citizen.InvokeNative(0xAAB86462966168CE, _target, 1)
             Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0) -- Actually remove the component
             Wait(500)
-            test = Citizen.InvokeNative(0xA0BC8FAED8CFEB3C, _target)
+            test = HasBodyComponentsLoaded (_target ,tonumber(data.hair) > 1 , tonumber(data.beard) > 1)
 
         end
         if _t == nil then
@@ -457,6 +517,30 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
         end
     end)
 end)
+
+function HasBodyComponentsLoaded (target , hair , beard)
+    local _target = target
+    local output = true
+    if
+        not Citizen.InvokeNative(0xFB4891BD7578CDC1 ,_target, tonumber(0x378AD10C)) or
+        not Citizen.InvokeNative(0xFB4891BD7578CDC1 ,_target, tonumber(0xEA24B45E)) or
+        not Citizen.InvokeNative(0xFB4891BD7578CDC1 ,_target, tonumber(0x823687F5)) or
+        not Citizen.InvokeNative(0xFB4891BD7578CDC1 ,_target, tonumber(0xB3966C9)) then
+        output = false
+    end
+    if hair and not Citizen.InvokeNative(0xFB4891BD7578CDC1 ,_target, tonumber(0x864B03AE))  then
+        output = false
+    end
+
+    if beard and not Citizen.InvokeNative(0xFB4891BD7578CDC1 ,_target, tonumber(0xF8016BCA))  then
+        output = false
+    end
+    if not Citizen.InvokeNative(0xA0BC8FAED8CFEB3C, _target) then
+        output = false
+    end
+    return output
+end
+
 
 RegisterNUICallback('updateBody', function(data, cb)
     TriggerEvent("redemrp_skin:updateBody" , data)
@@ -482,11 +566,23 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
             modelrequest( model2 )
         end
         Citizen.InvokeNative(0xED40380076A31506, PlayerId(), model2)
-        Citizen.InvokeNative(0x283978A15512B2FE,PlayerPedId(),true)
-        if sex == 2 then
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x10F5497A,false,true,true) -- PANTS
-            Citizen.InvokeNative(0xD3A7B003ED343FD9, PlayerPedId(),0x14511493,false,true,true) -- COAT
+        Citizen.InvokeNative(0x77FF8D35EEC6BBC4,PlayerPedId(),0,0) -- SetPedOutfitPreset
+        while not Citizen.InvokeNative(0xA0BC8FAED8CFEB3C,PlayerPedId()) do  -- wait till outfit fully loaded
+            Citizen.Wait(0)
         end
+        if IsPedMale(PlayerPedId()) then
+            Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber('0x' .. maletorsos[1]), false, true, true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber('0x' .. malelegs[1]), false, true, true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber('0x' .. maleheads[1]), false, true, true)
+            Citizen.InvokeNative(0xD710A5007C2AC539, PlayerPedId(), 0x1D4C528A, 0)
+        else
+            Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber('0x' .. femaletorsos[1]), false, true, true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber('0x' .. femalelegs[1]), false, true, true)
+            Citizen.InvokeNative(0xD3A7B003ED343FD9 , PlayerPedId(),   tonumber('0x' .. femaleheads[1]), false, true, true)
+        end
+        Citizen.InvokeNative(0x704C908E9C405136, PlayerPedId())
+        Citizen.InvokeNative(0xAAB86462966168CE, PlayerPedId(), 1)
+        Citizen.InvokeNative(0xCC8CA3E88256E58F, PlayerPedId(), 0, 1, 1, 1, 0)
     end
 
 
@@ -496,7 +592,7 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
         local torso = '0x' .. maletorsos[1]
         local legs = '0x' .. malelegs[1]
         local head = '0x' .. maleheads[1]
-		texture_types["male"].albedo = GetHashKey("mp_head_mr1_sc08_c0_000_ab")
+        texture_types["male"].albedo = GetHashKey("mp_head_mr1_sc08_c0_000_ab")
         if tonumber(data.sex) == 1 then
             print("test skory")
             if tonumber(data.skincolor) == 1 then
@@ -541,7 +637,7 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
             local torso2 = '0x' .. femaletorsos[1]
             local legs2 = '0x' .. femalelegs[1]
             local head2 = '0x' .. femalelegs[1]
-			texture_types["female"].albedo = GetHashKey("mp_head_fr1_sc08_c0_000_ab")
+            texture_types["female"].albedo = GetHashKey("mp_head_fr1_sc08_c0_000_ab")
             if tonumber(data.skincolor) == 1 then
                 torso2 = '0x' .. femaletorsos[1]
                 legs2 = '0x' .. femalelegs[1]
@@ -815,38 +911,4 @@ function camera(zoom, offset)
 end
 
 
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-        if is_overlay_change_active then  
-            local ped = overlay_ped
-            if IsPedMale(ped) then
-                current_texture_settings = texture_types["male"]
-            else
-                current_texture_settings = texture_types["female"]
-            end          
-            if textureId ~= -1 then
-                Citizen.InvokeNative(0xB63B9178D0F58D82,textureId)  -- reset texture
-                Citizen.InvokeNative(0x6BEFAA907B076859,textureId)  -- remove texture
-            end
-            textureId = Citizen.InvokeNative(0xC5E7204F322E49EB,current_texture_settings.albedo, current_texture_settings.normal, current_texture_settings.material);  -- create texture
-            for k,v in pairs(overlay_all_layers) do
-                if v.visibility ~= 0 then
-                    local overlay_id = Citizen.InvokeNative(0x86BB5FF45F193A02,textureId, v.tx_id , v.tx_normal, v.tx_material, v.tx_color_type, v.tx_opacity,v.tx_unk); -- create overlay
-                    if v.tx_color_type == 0 then
-                        Citizen.InvokeNative(0x1ED8588524AC9BE1,textureId,overlay_id,v.palette);    -- apply palette
-                        Citizen.InvokeNative(0x2DF59FFE6FFD6044,textureId,overlay_id,v.palette_color_primary,v.palette_color_secondary,v.palette_color_tertiary)  -- apply palette colours
-                    end
-                    Citizen.InvokeNative(0x3329AAE2882FC8E4,textureId,overlay_id, v.var);  -- apply overlay variant
-                    Citizen.InvokeNative(0x6C76BC24F8BB709A,textureId,overlay_id, v.opacity); -- apply overlay opacity
-                end
-            end
-            Citizen.Wait(100)
-            Citizen.InvokeNative(0x0B46E25761519058,ped,`heads`,textureId)  -- apply texture to current component in category "heads"
-            Citizen.InvokeNative(0x92DAABA2C1C10B0E,textureId)      -- update texture
-            Citizen.InvokeNative(0xCC8CA3E88256E58F,ped, 0, 1, 1, 1, false);  -- refresh ped components
-            is_overlay_change_active = false
-        end
-    end
-end)
 
