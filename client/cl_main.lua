@@ -246,8 +246,8 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
 
         while test == false do
             print("Loading...")
-            Citizen.InvokeNative(0x77FF8D35EEC6BBC4,PlayerPedId(),0,0) -- SetPedOutfitPreset
-            while not Citizen.InvokeNative(0xA0BC8FAED8CFEB3C,PlayerPedId()) do  -- wait till outfit fully loaded
+            Citizen.InvokeNative(0x77FF8D35EEC6BBC4,_target ,0,0) -- SetPedOutfitPreset
+            while not Citizen.InvokeNative(0xA0BC8FAED8CFEB3C, _target ) do  -- wait till outfit fully loaded
                 Citizen.Wait(0)
             end
             Citizen.InvokeNative(0x0BFA1BD465CDFEFD, _target)
