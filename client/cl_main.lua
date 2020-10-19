@@ -532,7 +532,7 @@ function HasBodyComponentsLoaded (target , hair , beard)
         output = false
     end
 
-    if beard and not Citizen.InvokeNative(0xFB4891BD7578CDC1 ,_target, tonumber(0xF8016BCA))  then
+    if beard and not Citizen.InvokeNative(0xFB4891BD7578CDC1 ,_target, tonumber(0xF8016BCA)) and IsPedMale(_target) then
         output = false
     end
     if not Citizen.InvokeNative(0xA0BC8FAED8CFEB3C, _target) then
