@@ -33,6 +33,7 @@ $(document).ready(function(){
       eyecolor: $('input[name=eyecolor]:checked','#formSkinCreator').val(),
       bodysize: $('.bodysize .active').attr('data'),      
       face: $('.face').val(),
+	  height: $('.height').val(),
       face_size: $('.face_size').val(),
       // Features
       face_width: $('.face_width').val(),    
@@ -57,6 +58,7 @@ $(document).ready(function(){
 	  eyes_depth: $('.eyes_depth').val(),
       eyes_angle: $('.eyes_angle').val(),
 	  eyes_distance: $('.eyes_distance').val(),
+	  eyes_height: $('.eyes_height').val(),
 	  nose_width: $('.nose_width').val(),  
 	  nose_size: $('.nose_size').val(),
       nose_height: $('.nose_height').val(),
@@ -97,6 +99,34 @@ $(document).ready(function(){
 	    ////Wiek///////////
 	  spots_t: $('.spots_type').val(),
       spots_op: $('.spots_opa').val(),
+	  	  ////Brwi///////////
+	  eyeliners_t: $('.eyeliners_type').val(),
+      eyeliners_op: $('.eyeliners_opa').val(),
+	  eyeliners_id: $('.eyeliners_pal_id').val(),
+	  eyeliners_c1: $('.eyeliners_color_1').val(),
+	  eyeliners_c2: $('.eyeliners_color_2').val(),
+	  eyeliners_c3: $('.eyeliners_color_3').val(),
+	  ////Brwi///////////
+	  shadows_t: $('.shadows_type').val(),
+      shadows_op: $('.shadows_opa').val(),
+	  shadows_id: $('.shadows_pal_id').val(),
+	  shadows_c1: $('.shadows_color_1').val(),
+	  shadows_c2: $('.shadows_color_2').val(),
+	  shadows_c3: $('.shadows_color_3').val(),
+	  ////Brwi///////////
+	  lipsticks_t: $('.lipsticks_type').val(),
+      lipsticks_op: $('.lipsticks_opa').val(),
+	  lipsticks_id: $('.lipsticks_pal_id').val(),
+	  lipsticks_c1: $('.lipsticks_color_1').val(),
+	  lipsticks_c2: $('.lipsticks_color_2').val(),
+	  lipsticks_c3: $('.lipsticks_color_3').val(),
+	  ////Brwi///////////
+	  blush_t: $('.blush_type').val(),
+      blush_op: $('.blush_opa').val(),
+	  blush_id: $('.blush_pal_id').val(),
+	  blush_c1: $('.blush_color_1').val(),
+	  blush_c2: $('.blush_color_2').val(),
+	  blush_c3: $('.blush_color_3').val(),
 	  /////////////////////////
 	  
     }));
@@ -111,7 +141,7 @@ $(document).ready(function(){
 	  }
 	  else{
      $("#beard").css("display","none");
-      }
+      }	  
     $.post('http://redemrp_skin/updateBody', JSON.stringify({
       value: false,
 // Body
@@ -120,6 +150,7 @@ $(document).ready(function(){
       eyecolor: $('input[name=eyecolor]:checked','#formSkinCreator').val(),
       bodysize: $('.bodysize .active').attr('data'),      
       face: $('.face').val(),
+	  height: $('.height').val(),
       face_size: $('.face_size').val(),
       // Features
       face_width: $('.face_width').val(),    
@@ -143,7 +174,8 @@ $(document).ready(function(){
       eyelid_width: $('.eyelid_width').val(),  
 	  eyes_depth: $('.eyes_depth').val(),
       eyes_angle: $('.eyes_angle').val(),
-	  eyes_distance: $('.eyes_distance').val(), 
+	  eyes_distance: $('.eyes_distance').val(),
+	  eyes_height: $('.eyes_height').val(),
 	  nose_width: $('.nose_width').val(),  
 	  nose_size: $('.nose_size').val(),
       nose_height: $('.nose_height').val(),
@@ -172,7 +204,7 @@ $(document).ready(function(){
 	  ////Blizny///////////
 	  scars_t: $('.scars_type').val(),
       scars_op: $('.scars_opa').val(),
-	  ////Wiek//////////
+	  ////Wiek///////////
 	  freckles_t: $('.freckles_type').val(),
       freckles_op: $('.freckles_opa').val(),
 	    ////Piegi///////////
@@ -184,6 +216,34 @@ $(document).ready(function(){
 	    ////Wiek///////////
 	  spots_t: $('.spots_type').val(),
       spots_op: $('.spots_opa').val(),
+	  	  ////Brwi///////////
+	  eyeliners_t: $('.eyeliners_type').val(),
+      eyeliners_op: $('.eyeliners_opa').val(),
+	  eyeliners_id: $('.eyeliners_pal_id').val(),
+	  eyeliners_c1: $('.eyeliners_color_1').val(),
+	  eyeliners_c2: $('.eyeliners_color_2').val(),
+	  eyeliners_c3: $('.eyeliners_color_3').val(),
+	  ////Brwi///////////
+	  shadows_t: $('.shadows_type').val(),
+      shadows_op: $('.shadows_opa').val(),
+	  shadows_id: $('.shadows_pal_id').val(),
+	  shadows_c1: $('.shadows_color_1').val(),
+	  shadows_c2: $('.shadows_color_2').val(),
+	  shadows_c3: $('.shadows_color_3').val(),
+	  ////Brwi///////////
+	  lipsticks_t: $('.lipsticks_type').val(),
+      lipsticks_op: $('.lipsticks_opa').val(),
+	  lipsticks_id: $('.lipsticks_pal_id').val(),
+	  lipsticks_c1: $('.lipsticks_color_1').val(),
+	  lipsticks_c2: $('.lipsticks_color_2').val(),
+	  lipsticks_c3: $('.lipsticks_color_3').val(),
+	  ////Brwi///////////
+	  blush_t: $('.blush_type').val(),
+      blush_op: $('.blush_opa').val(),
+	  blush_id: $('.blush_pal_id').val(),
+	  blush_c1: $('.blush_color_1').val(),
+	  blush_c2: $('.blush_color_2').val(),
+	  blush_c3: $('.blush_color_3').val(),
 	  /////////////////////////
     }));
   });
@@ -200,6 +260,7 @@ $(document).ready(function(){
       eyecolor: $('input[name=eyecolor]:checked','#formSkinCreator').val(),
       bodysize: $('.bodysize .active').attr('data'),      
       face: $('.face').val(),
+	  height: $('.height').val(),
       face_size: $('.face_size').val(),
       // Features
       face_width: $('.face_width').val(),    
@@ -224,6 +285,7 @@ $(document).ready(function(){
 	  eyes_depth: $('.eyes_depth').val(),
       eyes_angle: $('.eyes_angle').val(),
 	  eyes_distance: $('.eyes_distance').val(), 
+	  eyes_height: $('.eyes_height').val(),
 	  nose_width: $('.nose_width').val(),  
 	  nose_size: $('.nose_size').val(),
       nose_height: $('.nose_height').val(),
@@ -264,24 +326,76 @@ $(document).ready(function(){
 	    ////Wiek///////////
 	  spots_t: $('.spots_type').val(),
       spots_op: $('.spots_opa').val(),
+	  ////Brwi///////////
+	  eyeliners_t: $('.eyeliners_type').val(),
+      eyeliners_op: $('.eyeliners_opa').val(),
+	  eyeliners_id: $('.eyeliners_pal_id').val(),
+	  eyeliners_c1: $('.eyeliners_color_1').val(),
+	  eyeliners_c2: $('.eyeliners_color_2').val(),
+	  eyeliners_c3: $('.eyeliners_color_3').val(),
+	  ////Brwi///////////
+	  shadows_t: $('.shadows_type').val(),
+      shadows_op: $('.shadows_opa').val(),
+	  shadows_id: $('.shadows_pal_id').val(),
+	  shadows_c1: $('.shadows_color_1').val(),
+	  shadows_c2: $('.shadows_color_2').val(),
+	  shadows_c3: $('.shadows_color_3').val(),
+	  ////Brwi///////////
+	  lipsticks_t: $('.lipsticks_type').val(),
+      lipsticks_op: $('.lipsticks_opa').val(),
+	  lipsticks_id: $('.lipsticks_pal_id').val(),
+	  lipsticks_c1: $('.lipsticks_color_1').val(),
+	  lipsticks_c2: $('.lipsticks_color_2').val(),
+	  lipsticks_c3: $('.lipsticks_color_3').val(),
+	  ////Brwi///////////
+	  blush_t: $('.blush_type').val(),
+      blush_op: $('.blush_opa').val(),
+	  blush_id: $('.blush_pal_id').val(),
+	  blush_c1: $('.blush_color_1').val(),
+	  blush_c2: $('.blush_color_2').val(),
+	  blush_c3: $('.blush_color_3').val(),
 	  /////////////////////////
     }));
   }); 
   
   // Rotate player
   $(document).keypress(function(e) {
-    if(e.which == 113){ // Q pressed
-    console.log("bagno jest");
-      $.post('http://redemrp_skin/heading', JSON.stringify({
-        value: -10
-      }));
-    }
-    if(e.which == 101){ // E pressed
-      $.post('http://redemrp_skin/heading', JSON.stringify({
-        value: 10
-      }));
-    }
-  });
+        if (e.which == 113) { // Q pressed
+            $.post('http://redemrp_clothing/heading', JSON.stringify({
+                value: -10
+            }));
+        }
+        if (e.which == 120) { // x pressed
+            $.post('http://redemrp_clothing/defcam');
+        }
+        if (e.which == 101) { // E pressed
+            $.post('http://redemrp_clothing/heading', JSON.stringify({
+                value: 10
+            }));
+        }
+		if (e.which == 119) { // w pressed
+            $.post('http://redemrp_clothing/camera', JSON.stringify({
+                offset: 0.05
+            }));
+        }
+		if (e.which == 115) { // s pressed
+		console.log("dfgdsfgdfgdfghgfh");
+            $.post('http://redemrp_clothing/camera', JSON.stringify({
+                offset: -0.05
+            }));
+        }
+		if (e.which == 97) { // a pressed
+            $.post('http://redemrp_clothing/camera', JSON.stringify({
+                zoom: 0.05
+            }));
+        }
+		if (e.which == 100) { // d pressed
+            $.post('http://redemrp_clothing/camera', JSON.stringify({
+                zoom: -0.05
+            }));
+        }
+    });
+
 
 
 

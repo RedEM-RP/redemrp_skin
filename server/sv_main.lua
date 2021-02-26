@@ -9,12 +9,9 @@ AddEventHandler('redemrp_skin:createSkin', function(skin, cb)
         TriggerEvent("redemrp_db:retrieveSkin", identifier, charid, function(call)
 
                 if call then
-
                     MySQL.Async.execute("UPDATE skins SET `skin`='" .. encode .. "' WHERE `identifier`=@identifier AND `charid`=@charid", {identifier = identifier, charid = charid}, function(done)
                         end)
                 else
-                    TriggerEvent('redemrp_db:createStatus', _source)
-                    print("status activated")
                     MySQL.Async.execute('INSERT INTO skins (`identifier`, `charid`, `skin`) VALUES (@identifier, @charid, @skin);',
                         {
                             identifier = identifier,
@@ -35,15 +32,15 @@ AddEventHandler('redemrp_skin:loadSkin', function()
     TriggerEvent('redemrp:getPlayerFromId', _source, function(user)
         local identifier = user.getIdentifier()
         local charid = user.getSessionVar("charid")
-        --print(identifier)
 
         MySQL.Async.fetchAll('SELECT * FROM skins WHERE `identifier`=@identifier AND `charid`=@charid;', {identifier = identifier, charid = charid}, function(skins)
-            --print(skins[1].skin)
-            if skins[1] then
+            if next(skins) then
                 local skin = skins[1].skin
                 local test = json.decode(skin)
                 TriggerClientEvent("redemrp_skin:applySkin", _source, test)
-            else end
+            else
+				TriggerClientEvent("redemrp_skin:openCreator",_source)
+            end
         end)
     end)
 end)

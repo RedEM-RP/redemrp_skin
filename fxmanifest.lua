@@ -20,8 +20,7 @@ files {
 -- Client Scripts
 client_scripts {
     'client/cl_main.lua',
-   	'mp_female.lua',
-    'mp_male.lua',
+   	'cloth_hash_names.lua',
 	'overlays.lua',
 }
 
@@ -30,3 +29,8 @@ server_scripts {
     '@mysql-async/lib/MySQL.lua',     -- MySQL init
     'server/sv_main.lua',
 }
+export 'GetOverlayData'
+export 'GetTorso'
+export 'GetLegs'
+export 'GetComponentId'
+export 'GetBodyComponents'
