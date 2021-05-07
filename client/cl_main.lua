@@ -175,8 +175,7 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
         end
 				components_data = data
         while test == false do
-			print("Loading...")
-            LoadHeight(_target, data)
+	    print("Loading...")            
             FixIssues(_target, data)
             LoadBoody(_target, data)
             LoadHead(_target, data)
@@ -189,6 +188,7 @@ AddEventHandler('redemrp_skin:applySkin', function(_data, target , clothes)
             Citizen.InvokeNative(0x704C908E9C405136, _target)
             Citizen.InvokeNative(0xCC8CA3E88256E58F, _target, 0, 1, 1, 1, 0)
             test =  HasBodyComponentsLoaded (_target ,tonumber(data.hair) > 1 , tonumber(data.beard) > 1)
+	    LoadHeight(_target, data)
         end
         if _t == nil then
 			SetEntityAlpha(_target, 255)
