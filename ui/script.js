@@ -361,36 +361,35 @@ $(document).ready(function(){
   // Rotate player
   $(document).keypress(function(e) {
         if (e.which == 113) { // Q pressed
-            $.post('http://redemrp_clothing/heading', JSON.stringify({
+            $.post('https://redemrp_skin/heading', JSON.stringify({
                 value: -10
             }));
         }
         if (e.which == 120) { // x pressed
-            $.post('http://redemrp_clothing/defcam');
+            $.post('https://redemrp_skin/defcam');
         }
         if (e.which == 101) { // E pressed
-            $.post('http://redemrp_clothing/heading', JSON.stringify({
+            $.post('https://redemrp_skin/heading', JSON.stringify({
                 value: 10
             }));
         }
 		if (e.which == 119) { // w pressed
-            $.post('http://redemrp_clothing/camera', JSON.stringify({
+            $.post('https://redemrp_skin/camera', JSON.stringify({
                 offset: 0.05
             }));
         }
-		if (e.which == 115) { // s pressed
-		console.log("dfgdsfgdfgdfghgfh");
-            $.post('http://redemrp_clothing/camera', JSON.stringify({
+		if (e.which == 115) { // s pressed 
+            $.post('https://redemrp_skin/camera', JSON.stringify({
                 offset: -0.05
             }));
         }
 		if (e.which == 97) { // a pressed
-            $.post('http://redemrp_clothing/camera', JSON.stringify({
+            $.post('https://redemrp_skin/camera', JSON.stringify({
                 zoom: 0.05
             }));
         }
 		if (e.which == 100) { // d pressed
-            $.post('http://redemrp_clothing/camera', JSON.stringify({
+            $.post('https://redemrp_skin/camera', JSON.stringify({
                 zoom: -0.05
             }));
         }
