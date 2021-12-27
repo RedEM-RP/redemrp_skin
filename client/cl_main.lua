@@ -557,7 +557,11 @@ end
 
 function LoadHeight(target , data)
     if data.height ~= nil then
-        SetPedScale(target, tonumber(data.height/100))
+	if IsPedMale(target) == 1 then
+		SetPedScale(target, tonumber(data.height/100))
+	else
+		SetPedScale(target, tonumber(data.height/100))	
+	end
     end
 end
 
