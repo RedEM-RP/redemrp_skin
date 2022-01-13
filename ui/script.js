@@ -25,7 +25,7 @@ $(document).ready(function(){
 	  else{
      $("#beard").css("display","none");
       }	  
-    $.post('http://redemrp_skin/updateBody', JSON.stringify({
+    $.post('https://redemrp_skin/updateBody', JSON.stringify({
       value: false,
 // Body
       sex: $('input[name=sex]:checked', '#formSkinCreator').val(),
