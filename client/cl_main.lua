@@ -499,15 +499,17 @@ function LoadHair(target , data)
         if IsPedMale(target) then
             local hair =  list["hair"][tonumber(data.hair)]
             Citizen.InvokeNative(0xD3A7B003ED343FD9 , target,   tonumber(hair), false, true, true)
-            if tonumber(data.beard) > 1 then
-                local beard = list["beard"][tonumber(data.beard)]
-                Citizen.InvokeNative(0xD3A7B003ED343FD9 , target,  tonumber(beard), false, true, true)
-            end
         else
             local hair =  list_f["hair"][tonumber(data.hair)]
             Citizen.InvokeNative(0xD3A7B003ED343FD9 , target,   tonumber(hair), false, true, true)
         end
     end
+    if IsPedMale(target) then
+       if tonumber(data.beard) > 1 then
+          local beard = list["beard"][tonumber(data.beard)]
+	  Citizen.InvokeNative(0xD3A7B003ED343FD9 , target,  tonumber(beard), false, true, true)
+       end
+   end
 end
 
 function LoadHead(target , data)
