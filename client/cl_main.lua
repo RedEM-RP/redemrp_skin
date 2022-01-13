@@ -225,7 +225,6 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
             sex = 2
         end
         LoadModel(PlayerPedId() , model)
-        LoadHeight(PlayerPedId(), data)
         FixIssues(PlayerPedId(), data)
     end
     LoadBoody(PlayerPedId(), data , true)
@@ -237,6 +236,7 @@ AddEventHandler('redemrp_skin:updateBody', function(data)
     Citizen.CreateThread(function()
         LoadOverlays(PlayerPedId(), data)
     end)
+    LoadHeight(PlayerPedId(), data)
 
 end)
 
@@ -559,7 +559,11 @@ end
 
 function LoadHeight(target , data)
     if data.height ~= nil then
-        SetPedScale(target, tonumber(data.height/100))
+	if IsPedMale(target) == 1 then
+		SetPedScale(target, tonumber(data.height/100))
+	else
+		SetPedScale(target, tonumber(data.height/100))	
+	end
     end
 end
 
