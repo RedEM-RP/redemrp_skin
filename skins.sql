@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `skins` (
-  `identifier` varchar(40) NOT NULL,
+  `identifier` varchar(50) NOT NULL,
   `charid` int(11) NOT NULL,
   `skin` varchar(5000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
